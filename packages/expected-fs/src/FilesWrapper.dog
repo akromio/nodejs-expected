@@ -1,5 +1,4 @@
 use (
-  alias://path
   alias://fs
   {color} = alias://helpers
   AssertionError
