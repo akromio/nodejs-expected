@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toHave()", proc()
+    test("when dir has an entry, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.dir(__dirname)
+        out = w.toHave("toHave.js")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when dir doesn't have an entry, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.dir(__dirname).toHave("unknown"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should have entry")
+    end)
+  end)
+  
+  suite("notToHave()", proc()
+    test("when dir doesn't have entry, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.dir(__dirname)
+        out = w.notToHave("unknown")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when dir has entry, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.dir(__dirname).notToHave("toHave.js"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not have entry")
+    end)
+  end)
+end)

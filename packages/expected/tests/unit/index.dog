@@ -1,0 +1,35 @@
+use (
+  alias://path
+  {assert} = dep://chai
+  expected = ~
+)
+
+export suite(__filename, proc()
+  test("when imported, api must be exported", proc()
+    assert.typeOf(expected, "function")
+  end)
+
+  suite("expected.plugin()", proc()
+    test("when plugin is text, the module must be loaded and its members added", proc()
+      # (1) act
+      expected.plugin(path.join(__dirname, "../data/fs"))
+
+      # (2) assessment
+      assert.isFunction(expected.file)
+      assert.isFunction(expected.dir)
+    end)
+
+    test("when plugin is map, its members must be added", proc()
+      # (1) act
+      expected.plugin(use(path.join(__dirname, "../data/fs2")))
+
+      # (2) assessment
+      assert.isFunction(expected.FILE)
+      assert.isFunction(expected.DIR)
+    end)
+
+    test("when plugin already loaded, no member added", proc()
+      expected.plugin(use(path.join(__dirname, "../data/fs2")))
+    end)
+  end)
+end)

@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toStartWith()", proc()
+    test("when file starts with given prefix, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__dirname, "../../../package.json")
+        out = w.toStartWith("{")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file doesn't start with given prefix, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).toStartWith("xyz"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should start with")
+    end)
+  end)
+
+  suite("notToStartWith()", proc()
+    test("when file doesn't start with given prefix, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.notToStartWith("xyz")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file starts with given prefix, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__dirname, "../../../package.json").notToStartWith("{"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not start with")
+    end)
+  end)
+end)

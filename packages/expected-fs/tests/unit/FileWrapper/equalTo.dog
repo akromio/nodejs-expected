@@ -1,0 +1,50 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+  alias://fs
+)
+
+suite(__filename, proc()
+  suite("equalTo()", proc()
+    test("when equal to another, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        content = fs.read(__filename)
+        out = w.equalTo(content)
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when not equal to another, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).equalTo(""))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("file content should be")
+    end)
+  end)
+
+  suite("notEqualTo()", proc()
+    test("when not equal to another, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.notEqualTo("content")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when equal to another, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).notEqualTo(fs.read(__filename)))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("file content should not be")
+    end)
+  end)
+end)

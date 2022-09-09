@@ -1,0 +1,13 @@
+use (
+  pkg = ~
+  alias://expected
+)
+
+suite(__filename, proc()
+  test("when imported, name and members returned", proc()
+    expected(
+      pkg
+    ).member("name").toInclude("fs")\
+     .member("members").toHave(["dir", "file", "files"])
+  end)
+end)

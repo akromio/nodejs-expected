@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeTimestamp()", proc()
+    test("when timestamp, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(timestamp())
+        out = w.toBeTimestamp()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when not timestamp, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(123).toBeTimestamp())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be date.")
+    end)
+  end)
+
+  suite("notToBeTimestamp()", proc()
+    test("when not timestamp, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("")
+        out = w.notToBeTimestamp()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when timestamp, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(timestamp()).notToBeTimestamp())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be date.")
+    end)
+  end)
+end)

@@ -1,0 +1,7 @@
+uses:
+  get:
+    js: lodash.get
+  path:
+    js: "@dogmalang/path"
+  helpers:
+    js: "@akromio/expected-helpers"

@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeText()", proc()
+    test("when values are text, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = "", y = "", z = "").members("x", "y")
+        out = w.toBeText()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is not text, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = "", y = 0, z = "").members("x", "y").toBeText())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be text/string")
+    end)
+  end)
+
+  suite("notToBeText()", proc()
+    test("when some value is text, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = 0, y = "", z = 0).members("x", "y").notToBeText())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be text/string")
+    end)
+
+    test("when values are not text, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = 0, y = 0, z = 0).members("x", "y")
+        out = w.notToBeText()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+  end)
+end)

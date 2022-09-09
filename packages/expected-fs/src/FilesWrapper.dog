@@ -1,0 +1,32 @@
+use (
+  alias://path
+  alias://fs
+  {color} = alias://helpers
+  AssertionError
+)
+
+/**
+ * A wrapper of multiple files to assert things with them.
+ */
+export struct FilesWrapper
+  /**
+   * The file paths.
+   */
+  @hidden
+  pub const filePaths: text[1..*]
+
+  /**
+   * Checks whether all the files exist.
+   */
+  pub fn toExist() -> self
+    for each filePath in self.filePaths do
+      if not fs.isFile(filePath) then
+        throw(AssertionError($"file '${color(filePath)}' should exist."))
+
+  /**
+   * Checks whether all the files don't exist.
+   */
+  pub fn notToExist() -> self
+    for each filePath in self.filePaths do
+      if fs.isFile(filePath) then
+        throw(AssertionError($"file '${color(filePath)}' should not exist."))

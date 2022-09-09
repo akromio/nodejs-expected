@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeFn()", proc()
+    test("when values are fns, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = nop, y = nop, z = nop).members("x", "y")
+        out = w.toBeFn()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is not fn, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = nop, y = "", z = nop).members("x", "y").toBeFn())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be a function")
+    end)
+  end)
+
+  suite("notToBeFn()", proc()
+    test("when values are not fns, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = "", y = "", z = "").members("x", "y")
+        out = w.notToBeFn()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is fn, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = "", y = nop, z = "").members("x", "y").notToBeFn())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be a function")
+    end)
+  end)
+end)

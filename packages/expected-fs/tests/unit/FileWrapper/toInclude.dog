@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toInclude()", proc()
+    test("when file includes content, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.toInclude("toInclude")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file doesn't include, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__dirname, "toExist.js").toInclude("xyz"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should include")
+    end)
+  end)
+
+  suite("notToInclude()", proc()
+    test("when file doesn't include content, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__dirname, "toBeEmpty.js")
+        out = w.notToInclude("zyx")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file includes content, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).notToInclude("zyx"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not include")
+    end)
+  end)
+end)

@@ -1,0 +1,43 @@
+use (
+  ValueWrapper
+)
+
+/**
+ * Creates a [value] wrapper for performing assertions on it.
+ */
+export fn expected(value?) -> wrapper
+  if value is not promise then
+    wrapper = ValueWrapper(value=)
+  else
+    wrapper = promise(async proc(rslv, rej)
+      if [ok, returned] ::= pawait(value); ok then
+        rslv(ValueWrapper(value = returned, fulfilled = true))
+      else
+        rslv(ValueWrapper(value = returned, fulfilled = false))
+    end)
+
+/**
+ * Loaded plugins.
+ */
+const plugins = {}
+
+/**
+ * Loads a given [plugin], returning the [expected] object.
+ *
+ * When [plugin] is a text, this is the package name and must be accessible from this package;
+ * otherwise, the plugin object must be passed.
+ */
+expected.plugin = fn(plugin: (text | map))
+  # (1) load plugin members when needed
+  if plugin is text then
+    plugin = use(plugin)
+
+  if not plugins[plugin.name] then
+    plugins[plugin.name] = plugin
+
+    for each key, val in plugin.members do
+      if key != "plugin" then expected[key] = val
+
+  # (2) return
+  return expected
+end

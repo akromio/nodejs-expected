@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toBeEmpty()", proc()
+    test("when file is empty, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__dirname, "../../data/empty.txt")
+        out = w.toBeEmpty()
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file isn't empty, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).toBeEmpty())
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should be empty")
+    end)
+  end)
+
+  suite("notToBeEmpty()", proc()
+    test("when file isnt empty, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.notToBeEmpty()
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file is empty, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__dirname, "../../data/empty.txt").notToBeEmpty())
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not be empty")
+    end)
+  end)  
+end)

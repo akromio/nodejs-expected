@@ -1,0 +1,57 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("sameAs()", proc()
+    test("when the same, wrapper must be returned", proc()
+      # (1) act
+      const (
+        obj = {}
+        w = expected(obj)
+        out = w.sameAs(obj)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when not the same, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected({}).sameAs({}))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be same as")
+    end)
+  end)
+
+  suite("notSameAs", proc()
+    test("when not the same, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected({})
+        out = w.notSameAs({})
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when the same, assertion error must be raised", proc()
+      # (1) act
+      const (
+        obj = {}
+        out = peval(expected(obj).notSameAs(obj))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "value should not be same as")
+    end)
+  end)
+end)

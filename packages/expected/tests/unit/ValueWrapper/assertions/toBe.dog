@@ -1,0 +1,55 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBe()", proc()
+    test("when value is instance of a given type, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("ciao mondo!")
+        out = w.toBe(text)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when value is not instance of the given type, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(1234).toBe(text))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be instance of")
+      assert.include(out[1].message, "text")
+    end)
+  end)
+
+  suite("notToBe()", proc()
+    test("when value is not instance of its type, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("ciao mondo!")
+        out = w.notToBe(num)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when value is instance of its type, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(123).notToBe(num))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be instance of")
+      assert.include(out[1].message, "num")
+    end)
+  end)
+end)

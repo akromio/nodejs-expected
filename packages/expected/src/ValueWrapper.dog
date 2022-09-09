@@ -1,0 +1,553 @@
+use (
+  dep://assert
+  dep://chalk
+  alias://get
+  dep://uuid
+  Ajv = dep://ajv
+  {format, color} = alias://helpers
+  AssertionError
+  ValuesWrapper
+)
+
+/**
+ * A wrapper for a value to perform assertions with it.
+ */
+@Self
+export struct ValueWrapper
+  /**
+   * The value to assert.
+   * This can be nil.
+   */
+  @hidden @inject
+  pub const value?
+
+  /**
+   * The original object, used when a wrapped created
+   * with member(), members() or items() from other wrapper.
+   */
+  @hidden @inject
+  pub const originalValue?
+
+  /**
+   * When promise, it indicates if this was fulfilled/resolved.
+   */
+  @hidden
+  pub const fulfilled?: bool
+
+  /**
+   * Returns a wrapper for an item of a list.
+   */
+  @alias("it")
+  pub fn item(i: num) = self.get($"[${i}]")
+  
+  /**
+   * Returns a wrapper for the items if list.
+   */
+  pub fn items(...indexes): ValuesWrapper
+    # (1) get items
+    var (
+      root ::= originalValue ?? value
+      values
+    )
+
+    if len(indexes) == 0 then
+      values = root
+    else
+      values = []
+      
+      for each i in indexes do
+        values.push(root[i])
+
+    # (2) return wrapper
+    return ValuesWrapper(originalValue = root, values)
+
+  /**
+   * Returns a wrapper for the value of a member.
+   */
+  pub fn member(name: text) = self.get(name)
+
+  /**
+   * Returns a wrapper for the values of several members.
+   */
+  pub fn members(...names): ValuesWrapper
+    # (1) get values
+    const (
+      root = originalValue ?? value
+      values = []
+    )
+
+    for each exp: text in names do
+      values.push(get(root, exp))
+
+    # (2) return wrapper
+    return ValuesWrapper(originalValue = root, values)
+  
+  /**
+   * Returns a wrapper for the value length.
+   */
+  pub fn len() = Self(
+    originalValue = self.value
+    value = len(self.value)
+  )
+
+  /**
+   * Returns a wrapper for a value returned by [exp]ression on the wrapped value.
+   */
+  pub fn get(exp: (text | num))
+    const (
+      root = originalValue ?? value
+    )
+
+    return Self(value = get(root, exp), originalValue = root)
+  
+  /**
+   * Checks whether the value raises a given [error] when called.
+   */
+  @alias("toRaise")
+  pub fn toThrow(errExpected?) -> self
+    if [ok, res] ::= peval(value()); ok then
+      throw(AssertionError("error should be raised."))
+    else
+      if errExpected then
+        if Type ::= errExpected; Type is func then
+          if res is not Type then
+            throw(AssertionError($"error of type ${color(Type.name)} should be raised."))
+        else
+          if errExpected is text and res is Error then
+            if res.message != errExpected then
+              throw(AssertionError($"Error message expected: ${color(errExpected)}. Got: ${color(res.message)}."))
+          else if not peval(assert.deepEqual(res, errExpected))[0] then
+            throw(AssertionError($"${color(typename(errExpected) + ': ' + errExpected.message)} should be raised."))
+
+  /**
+   * Checks whether the value doesn't raise a given [error] when called.
+   */
+  @alias("notToRaise")
+  pub fn notToThrow(err?) -> self
+    if [ok, res] ::= peval(value()); not ok then
+      if not err then
+        throw(AssertionError("error should not be raised."))
+      else
+        if Type ::= err; Type is func then
+          if res is Type then
+            throw(AssertionError($"error of type ${color(Type.name)} should not be raised."))
+        else
+          if peval(assert.deepEqual(res, err))[0] then
+            throw(AssertionError($"${color(typename(err) + ': ' + err.message)} should not be raised."))
+
+  /**
+   * Checks whether the value is an instance of a given [Type].
+   */
+  @alias("toBeInstanceOf")
+  pub fn toBe(Type) -> self
+    if value is not Type then
+      throw(AssertionError($"${format(value)} should be instance of ${color(Type.name)}."))
+
+  /**
+   * Checks whether the value is not instance of a given [Type].
+   */
+  @alias("notToBeInstanceOf")
+  pub fn notToBe(Type) -> self
+    if value is Type then
+      throw(AssertionError($"${format(value)} should not be instance of ${color(Type.name)}."))
+
+  /**
+   * Checks whether the value is null or nil.
+   */
+  @alias("toBeNull")
+  pub fn toBeNil() -> self
+    if value != nil then
+      throw(AssertionError($"${format(value)} should be nil/null."))
+
+  /**
+   * Checks whether the value is not null or nil.
+   */
+  @alias("notToBeNull")
+  pub fn notToBeNil() -> self
+    if value == nil then
+      throw(AssertionError("value should not be nil/null."))
+
+  /**
+   * Check whether the value is a boolean.
+   */
+  @alias("toBeBoolean")
+  pub fn toBeBool() -> self
+    if value is not bool then
+      throw(AssertionError($"${format(value)} should be boolean."))
+
+  /**
+   * Checks whether the value is not a boolean.
+   */
+  @alias("notToBeBoolean")
+  pub fn notToBeBool() -> self
+    if value is bool then
+      throw(AssertionError($"${format(value)} should not be boolean."))
+
+  /**
+   * Checks whether the value is a date.
+   */
+  @alias("toBeDate")
+  pub fn toBeTimestamp() -> self
+    if value is not timestamp then
+      throw(AssertionError($"${format(value)} should be date."))
+
+  /**
+   * Checks whether the value is not a date.
+   */
+  @alias("notToBeDate")
+  pub fn notToBeTimestamp() -> self
+    if value is timestamp then
+      throw(AssertionError($"${format(value)} should not be date."))
+
+  /**
+   * Checks whether the value is a string or text.
+   */
+  @alias("toBeString")
+  pub fn toBeText() -> self
+    if value is not text then
+      throw(AssertionError($"${format(value)} should be text/string."))
+
+  /**
+   * Checks whether the value is not a string or text.
+   */
+  @alias("notToBeString")
+  pub fn notToBeText() -> self
+    if value is text then
+      throw(AssertionError($"${format(value)} should not be text/string."))
+
+  /**
+   * Checks whether the value is a number.
+   */
+  @alias("toBeNumber")
+  pub fn toBeNum() -> self
+    if value is not num then
+      throw(AssertionError($"${format(value)} should be a number."))
+
+  /**
+   * Checks whether the value is not a number.
+   */
+  @alias("notToBeNumber")
+  pub fn notToBeNum() -> self
+    if value is num then
+      throw(AssertionError($"${format(value)} should not be a number."))
+
+  /**
+   * Checks whether the value is an array or list.
+   */
+  @alias("toBeArray")
+  pub fn toBeList() -> self
+    if value is not list then
+      throw(AssertionError($"${format(value)} should be an array or list."))
+
+  /**
+   * Checks whether the value is not an array or list.
+   */
+  @alias("notToBeArray")
+  pub fn notToBeList() -> self
+    if value is list then
+      throw(AssertionError($"${format(value)} should not be an array or list."))
+
+  /**
+   * Checks whether the value is a set.
+   */
+  pub fn toBeSet() -> self
+    if value is not set then
+      throw(AssertionError($"${format(value)} should be a set."))
+
+  /**
+   * Checks whether the value is not a set.
+   */
+  pub fn notToBeSet() -> self
+    if value is set then
+      throw(AssertionError($"${format(value)} should not be a set."))
+
+  /**
+   * Checks whether the value is an object or map.
+   */
+  @alias("toBeObject")
+  pub fn toBeMap() -> self
+    if value is not map then
+      throw(AssertionError($"${format(value)} should be an object or map."))
+
+  /**
+   * Checks whether the value is not an object or map.
+   */
+  @alias("notToBeObject")
+  pub fn notToBeMap() -> self
+    if value is map then
+      throw(AssertionError($"${format(value)} should not be an object or map."))
+
+  /**
+   * Checks whether the value is a function.
+   */
+  @alias("toBeFunction")
+  pub fn toBeFn() -> self
+    if value is not func then
+      throw(AssertionError($"${format(value)} should be a function."))
+
+  /**
+   * Checks whether the value is not a function.
+   */
+  @alias("notToBeFunction")
+  pub fn notToBeFn() -> self
+    if value is func then
+      throw(AssertionError($"${format(value)} should not be a function."))
+
+  /**
+   * Checks whether the value is callable.
+   */
+  pub fn toBeCallable() -> self
+    if value is not func then
+      throw(AssertionError($"${format(value)} should be callable."))
+
+  /**
+   * Checks whether the value is not callable.
+   */
+  pub fn notToBeCallable() -> self
+    if value is func then
+      throw(AssertionError($"${format(value)} should not be callable."))
+
+  /**
+   * Checks whether the value is equal to [another].
+   */
+  @alias("equalTo")
+  pub fn equals(another?) -> self
+    if typename(value) != typename(another) or not peval(assert.deepEqual(value, another))[0] then
+      const (
+        actual = format(value)
+        expected = format(another)
+        opts = $"${actual} should be equal to ${expected}."
+      )
+
+      throw(AssertionError(opts))
+
+  /**
+   * Checks whether the value is not equal to [another].
+   */
+  @alias("notEqualTo")
+  pub fn notEquals(another?) -> self
+    if typename(value) == typename(another) and peval(assert.deepEqual(value, another))[0] then
+      const (
+        actual = format(value)
+        opts = $"value should not be equal to: ${actual}."
+      )
+
+      throw(AssertionError(opts))
+
+  /**
+   * Checks whether the value is the same as [another].
+   */
+  pub fn sameAs(another?) -> self
+    if value !== another then
+      throw(AssertionError($"${format(value)} should be same as ${format(another)}."))
+
+  /**
+   * Checks whether the value is not the same as [another].
+   */
+  pub fn notSameAs(another?) -> self
+    if value === another then
+      throw(AssertionError($"value should not be same as ${format(another)}."))
+
+  /**
+   * Checks whether the value is less than [another].
+   */
+  pub fn lessThan(another) -> self
+    if typename(value) != typename(another) or value >= another then
+      throw(AssertionError($"${format(value)} should be less than ${format(another)}."))
+
+  /**
+   * Checks whether the value is less than or equal to [another].
+   */
+  pub fn lessThanOrEqualTo(another) -> self
+    if typename(value) != typename(another) or value > another then
+      throw(AssertionError($"${format(value)} should be less than or equal to ${format(another)}."))
+
+  /**
+   * Checks whether the value is greater than or equal to [another].
+   */
+  pub fn greaterThan(another) -> self
+    if typename(value) != typename(another) or typename(value) in ["bool"] or value <= another then
+      throw(AssertionError($"${format(value)} should be greater than ${format(another)}."))
+
+  /**
+   * Checks whether the value is greater than or equal to [another].
+   */
+  pub fn greaterThanOrEqualTo(another) -> self
+    if typename(value) != typename(another) or typename(value) in ["bool"] or value < another then
+      throw(AssertionError($"${format(value)} should be greater than or equal to ${format(another)}."))
+
+  /**
+   * Checks whether the value is between two values.
+   */
+  pub fn 'between'(val1?, val2?) -> self
+    if typename(value) != typename(val1) or typename(value) != typename(val2) or value < val1 or value > val2 then
+      throw(AssertionError($"${format(value)} should be between ${format(val1)} and ${format(val2)}."))
+
+  /**
+   * Checks whether the value is not between two values.
+   */
+  pub fn notBetween(val1?, val2?) -> self
+    if typename(value) == typename(val1) and typename(value) == typename(val2) and value >= val1 and value <= val2 then
+      throw(AssertionError($"${format(value)} should not be between ${format(val1)} and ${format(val2)}."))
+
+  /**
+   * Checks whether the value includes one [item].
+   */
+  @alias("toContain")
+  pub fn toInclude(item?) -> self
+    if [ok, res] ::= peval(value.includes(item)); not ok or not res then
+      throw(AssertionError($"${format(value)} should include ${format(item)}."))
+
+  /**
+   * Checks whether the value doesn't include one [item].
+   */
+  @alias("notToContain")
+  pub fn notToInclude(item?) -> self
+    if [ok, res] ::= peval(value.includes(item)); ok and res then
+      throw(AssertionError($"${format(value)} should not include ${format(item)}."))
+
+  /**
+   * Checks whether the value is into [another].
+   */
+  pub fn into(another: list) -> self
+    if not another.includes(value) then
+      throw(AssertionError($"${format(value)} should be in ${format(another)}."))
+
+  /**
+   * Checks whether the value is not into [another].
+   */
+  pub fn notInto(another: list) -> self
+    if another.includes(value) then
+      throw(AssertionError($"${format(value)} should not be in ${format(another)}."))
+
+  /**
+   * Checks whether the value has one or several [members].
+   */
+  pub fn toHave(members: (text | list | map)) -> self
+    # (1) arguments
+    if members is not [list, map] then members = [members]
+
+    # (2) check
+    if members is list then
+      for each mem in members do
+        if value[mem] == nil then
+          throw(AssertionError($"${format(value)} should have member ${color(mem)}."))
+    else
+      for each mem, val in members do
+        if [ok, received] ::= peval(assert.deepEqual(value[mem], val)); not ok then
+          throw(AssertionError($"${format(value)} should have ${color(mem)} to ${format(val)}. Got: ${format(value[mem])}."))
+
+  /**
+   * Checks whether the value doesn't have one or several [members].
+   */
+  pub fn notToHave(members: (text | list | map)) -> self
+    # (1) arguments
+    if members is not [list, map] then members = [members]
+
+    # (2) check
+    if members is list then
+      for each mem in members do
+        if value[mem] !== undefined then
+          throw(AssertionError($"${format(value)} should not have member ${color(mem)}."))
+    else
+      for each mem, val in members do
+        if received ::= value[mem]; received == val then
+          throw(AssertionError($"${format(value)} should not have ${color(mem)} to ${format(val)}."))
+
+  /**
+   * Checks whether the value is empty, that is, length is 0 or empty string.
+   */
+  pub fn toBeEmpty() -> self
+    if len(value) != 0 then
+      throw(AssertionError($"${format(value)} should be empty."))
+
+  /**
+   * Checks whether the value is not empty, that is, it has items.
+   */
+  pub fn notToBeEmpty() -> self
+    if typename(value) in ["bool", "num"] or len(value) == 0 then
+      throw(AssertionError($"${format(value)} should not be empty."))
+
+  /**
+   * Checks whether the value has a given length.
+   */
+  @alias("toHaveLen")
+  pub fn toHaveLength(size: (num | list)) -> self
+    if received ::= len(value); received != size then
+      throw(AssertionError($"${format(value)} should have length to ${color(size)}. Got: ${color(received)}."))
+
+  /**
+   * Checks whether the value has not a given length.
+   */
+  @alias("notToHaveLen")
+  pub fn notToHaveLength(size: num) -> self
+    if received ::= len(value); received == size then
+      throw(AssertionError($"${format(value)} should not have length to ${color(size)}."))
+
+  /**
+   * Checks whether the value matches a given pattern.
+   */
+  @alias("toMatch")
+  pub fn 'like'(pattern: text) -> self
+    if not re(pattern).test(value) then
+      throw(AssertionError($"${format(value)} should be like ${format(pattern)}."))
+
+  /**
+   * Checks whether the value does not match a given [pattern].
+   */
+  @alias("notToMatch")
+  pub fn notLike(pattern: text) -> self
+    if re(pattern).test(value) then
+      throw(AssertionError($"${format(value)} should not be like ${format(pattern)}."))
+
+
+  /**
+   * Checks whether the value starts with a given [prefix].
+   */
+  pub fn toStartWith(prefix: text) -> self
+    if not text(value).startsWith(prefix) then
+      throw(AssertionError($"${format(value)} should start with ${format(prefix)}."))
+
+  /**
+   * Checks whether the value doesn't start with a given [prefix].
+   */
+  pub fn notToStartWith(prefix: text) -> self
+    if text(value).startsWith(prefix) then
+      throw(AssertionError($"${format(value)} should not start with ${format(prefix)}."))
+
+  /**
+   * Checks whether the value ends with a given [suffix].
+   */
+  pub fn toEndWith(suffix: text) -> self
+    if not text(value).endsWith(suffix) then
+      throw(AssertionError($"${format(value)} should end with ${format(suffix)}."))
+
+  /**
+   * Checks whether the value doesn't end with a given [suffix].
+   */
+  pub fn notToEndWith(suffix: text) -> self
+    if text(value).endsWith(suffix) then
+      throw(AssertionError($"${format(value)} should not end with ${format(suffix)}."))
+
+  /**
+   * Checks whether the promised value has been fulfilled.
+   */
+  @alias("toHaveBeenFulfilled")
+  pub fn toBeFulfilled() -> self
+    if self.fulfilled !== true then
+      throw(AssertionError($"value should have been fulfilled."))
+
+  /**
+   * Checks whether the promised value has been rejected.
+   */
+  @alias("toHaveBeenRejected")
+  pub fn toBeRejected() -> self
+    if self.fulfilled !== false then
+      throw(AssertionError($"value should have been rejected."))
+
+  /**
+   * Checks whether the value is a valid UUID.
+   */
+  pub fn toBeUuid() -> self
+    if not uuid.validate(value) then
+      throw(AssertionError($"${format(value)} should be a valid UUID."))

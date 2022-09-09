@@ -1,0 +1,10 @@
+{
+  "cSpell.language": "en",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "cSpell.words": [
+    "akromio"
+  ]
+}

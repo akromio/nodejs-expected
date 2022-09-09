@@ -1,0 +1,55 @@
+use (
+  {assert} = dep://chai
+  pkg = ~
+)
+
+export suite(__filename, proc()
+  test("when imported, api must be exported", proc()
+    assert.isFunction(pkg.format)
+    assert.isFunction(pkg.color)
+  end)
+
+  suite("color()", proc()
+    const {color} = pkg
+
+    test("when value passed, this must be colored", proc()
+      # (1) act
+      const (
+        value = "hello"
+        out = color(value)
+      )
+
+      # (2) assessment
+      assert.include(out, value)
+    end)
+  end)
+
+  suite("format()", proc()
+    const {format} = pkg
+
+    test("when value length greater than max length, value must be reduced", proc()
+      # (1) act
+      const (
+        value = "ci" + "x".repeat(100) + "ao"
+        out = format(value)
+      )
+
+      # (2) assessment
+      assert.isAbove(len(out), 30)
+      assert.include(out, "cix")
+      assert.include(out, "xao")
+    end)
+
+    test("when value length less than max length, colored value must be returned", proc()
+      # (1) act
+      const (
+        value = "ciao"
+        out = format(value)
+      )
+
+      # (2) assessment
+      assert.isAbove(len(out), len(value))
+      assert.include(out, "ciao")
+    end)
+  end)
+end)

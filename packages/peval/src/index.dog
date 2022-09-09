@@ -1,0 +1,5 @@
+export fn pEval(call: func) -> result: list
+  do
+    result = [true, call()]
+  catch e
+    result = [false, e]

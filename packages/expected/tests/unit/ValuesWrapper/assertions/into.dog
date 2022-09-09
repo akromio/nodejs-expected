@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("into", proc()
+    test("when values in, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = "one", y = "two", z = "three").members("x", "y")
+        out = w.into(["one", "two", "three"])
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value not in, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = 0, y = 1, z = 2).members("x", "y").into([1, 2, 3]))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be in")
+    end)
+  end)
+
+  suite("notInto()", proc()
+    test("when values not in, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = 1, y = 2, z = 3).members("x", "y")
+        out = w.notInto(["one", "two", "three"])
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value in, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = 1, y = 2, z = 3).members("x", "y").notInto([0, 1, 2]))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be in")
+    end)
+  end)
+end)

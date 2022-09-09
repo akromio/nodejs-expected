@@ -1,0 +1,27 @@
+use (
+  dep://chalk
+)
+
+/**
+ * Maximum length for the texts.
+ */
+const maxLen = 50
+
+/**
+ * Section length for the texts.
+ */
+const segmentLen = (50 / 2) - 6
+
+/**
+ * Formats a given [value].
+ */
+pub fn format(value?) -> repr
+  if len((repr = fmt(value))) > maxLen then
+    repr = repr[0, segmentLen] + "..." + repr[-segmentLen, -1]
+  
+  repr = color($"<${typename(value)}> " + repr)
+
+/**
+ * Adds color to a value.
+ */
+pub fn color(value?) = chalk.bold(value)

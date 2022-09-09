@@ -1,0 +1,65 @@
+spec: "1.0"
+version: 1.0.0
+
+plugins:
+  - plugin: "@ethronpi/babel"
+
+defaultTask: build-and-test
+
+tasks:
+  - macro: lint
+    title: Lint source code
+    group: build
+    tasks:
+      - [exec, dogmac check src test]
+      - [exec, node_modules/.bin/tsc src/index.d.ts]
+
+  - macro: trans-dogma
+    title: Transpile from Dogma to JS
+    group: build
+    hidden: true
+    tasks:
+      - [fs.rm, build]
+      - [exec, dogmac js -o build src/]
+      - [exec, dogmac js -o build test/]
+
+  - macro: trans-js
+    title: Transpile from JS to JS
+    group: build
+    hidden: true
+    tasks:
+      - [fs.rm, lib]
+      - [babel, build/src, lib/]
+      - [fs.cp, src/index.d.ts, lib/index.d.ts]
+      - [fs.cp, src/FileWrapper.d.ts, lib/FileWrapper.d.ts]
+      - [fs.cp, src/DirWrapper.d.ts, lib/DirWrapper.d.ts]
+      - [fs.rm, __test__]
+      - [babel, build/test, __test__/]
+      - [fs.cp, test/data/, __test__/data]
+
+  - macro: build
+    title: Build package
+    group: build
+    tasks:
+      - lint
+      - trans-dogma
+      - trans-js
+
+  ########
+  # test #
+  ########
+
+  - tests: test
+    title: Run unit tests
+    group: test
+    kind: unit
+    workDir: __test__/unit
+    tasks:
+      - /
+
+  - macro: build-and-test
+    title: Build and test
+    group: test
+    tasks:
+      - build
+      - test

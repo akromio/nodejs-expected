@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeSet()", proc()
+    test("when values are set, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = set(), y = set(), z = set()).members("x", "y")
+        out = w.toBeSet()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some vlaue is not set, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = set(), y = "", z = set()).members("x", "y").toBeSet())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be a set")
+    end)
+  end)
+
+  suite("notToBeSet()", proc()
+    test("when values are not set, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = "", y = "", z = "").members("x", "y")
+        out = w.notToBeSet()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is set, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = "", y = set(), z = "").members("x", "y").notToBeSet())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be a set")
+    end)
+  end)
+end)

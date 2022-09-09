@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeList()", proc()
+    test("when list, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected([])
+        out = w.toBeList()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when not list, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected("second").toBeList())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be an array or list")
+    end)
+  end)
+
+  suite("notToBeList()", proc()
+    test("when not list, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("[]")
+        out = w.notToBeList()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when list, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected([]).notToBeList())
+      
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be an array or list")
+    end)
+  end)
+end)

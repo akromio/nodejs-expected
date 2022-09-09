@@ -1,0 +1,74 @@
+use (
+  {assert} = dep://chai
+  expected = ~
+)
+
+export suite(__filename, proc()
+  suite("item()", proc()
+    test("when item found, item wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).it(1)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, 22)
+      assert.strictEqual(w.equalTo(22), w)
+    end)
+
+    test("when item not found, nil wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).it(10)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, nil)
+      assert.strictEqual(w.toBeNil(), w)
+    end)
+  end)
+
+  suite("items()", proc()
+
+
+    test("when indexes passed, ValuesWrapper w/ selected items must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).items(0, 2)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.deepEqual(w.values, [value[0], value[2]])
+    end)
+
+    test("when no index passed, ValuesWrapper must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).items()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.strictEqual(w.values, value)
+    end)
+
+    test("when originalValue is not nil, this must be used as root", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).it(0).items()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.strictEqual(w.values, value)
+    end)
+  end)
+end)

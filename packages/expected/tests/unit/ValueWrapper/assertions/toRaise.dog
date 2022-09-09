@@ -1,0 +1,175 @@
+use (
+  {assert} = dep://chai
+  {AssertionError} = dep://assert
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toRaise()", proc()
+    suite("when no error passed", proc()
+      test("when error raised, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected("bonjour")
+          out = w.toRaise()
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error not raised, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected(nop).toRaise())
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "error should be raised.")
+      end)
+    end)
+
+    suite("when specific type passed", proc()
+      test("when error raised of the type, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected("bonjour")
+          out = w.toRaise(TypeError)
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error raised but not of the type, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected("bonjour").toRaise(SyntaxError))
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "SyntaxError")
+        assert.include(out[1].message, "should be raised")
+      end)
+    end)
+
+    suite("when specific error object passed", proc()
+      test("when error raised same as specific error, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected("bonjour")
+          out = w.toRaise(TypeError("value is not a function"))
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error raised but not specific error, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected("bonjour").toRaise(Error("xyz")))
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "should be raised")
+      end)
+
+      suite("error expected is a text", proc()
+        test("when error raised and real message is different, assertion error must be raised", proc()
+          # (1) act
+          const out = peval(expected("bonjour").toRaise("xyz"))
+
+          # (2) assessment
+          assert.equal(out[0], false)
+          assert.instanceOf(out[1], AssertionError)
+          assert.include(out[1].message, "value is not a function")
+        end)
+
+        test("when error raised and real message is the same, wrapper must be returned", proc()
+          # (1) act
+          const (
+            w = expected("bonjour")
+            out = w.toRaise("value is not a function")
+          )
+
+          # (2) assessment
+          expected(out).sameAs(w)
+        end)
+      end)
+    end)
+  end)
+
+  suite("notToRaise()", proc()
+    suite("when no error passed", proc()
+      test("when no error raised, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected(nop)
+          out = w.notToRaise()
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error raised, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected("ciao!").notToRaise())
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "error should not be raised")
+      end)
+    end)
+
+    suite("when specific type passed", proc()
+      test("when error raised but not of the type, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected("bonjour")
+          out = w.notToRaise(SyntaxError)
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error raised of the type, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected("bonjour").notToRaise(TypeError))
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "TypeError")
+        assert.include(out[1].message, "should not be raised")
+      end)
+    end)
+
+    suite("when specific error object passed", proc()
+      test("when error raised not same as specific error object, wrapper must be returned", proc()
+        # (1) act
+        const (
+          w = expected("bonjour")
+          out = w.notToRaise(TypeError("xyz is not a function"))
+        )
+
+        # (2) assessment
+        assert.strictEqual(out, w)
+      end)
+
+      test("when error raised same as specific error object, assertion error must be raised", proc()
+        # (1) act
+        const out = peval(expected("bonjour").notToRaise(TypeError("value is not a function")))
+
+        # (2) assessment
+        assert.equal(out[0], false)
+        assert.instanceOf(out[1], AssertionError)
+        assert.include(out[1].message, "TypeError")
+        assert.include(out[1].message, "should not be raised.")
+      end)
+    end)
+  end)
+end)

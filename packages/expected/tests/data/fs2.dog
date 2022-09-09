@@ -1,0 +1,6 @@
+export {
+  name = "fs2"
+  members =
+    DIR = nop
+    FILE = nop
+}

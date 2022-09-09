@@ -1,0 +1,160 @@
+use (
+  alias://path
+  alias://fs
+  AssertionError
+)
+
+/**
+ * A file wrapper to assert file content.
+ */
+export struct FileWrapper
+  /**
+   * The file path.
+   */
+  @hidden @inject
+  pub const filePath: text
+
+  /**
+   * Checks whether the file exists.
+   */
+  pub fn toExist() -> self
+    if not fs.isFile(filePath) then
+      throw(AssertionError($"file '${filePath}' should exist."))
+
+  /**
+   * Checks whether the file doesn't exist.
+   */
+  pub fn notToExist() -> self
+    if fs.isFile(filePath) then
+      throw(AssertionError($"file '${filePath}' should not exist."))
+
+  /**
+   * Checks whether the file includes one or more [texts].
+   */
+  @alias("toContain")
+  pub fn toInclude(texts: list(any)) -> self
+    # (1) pre
+    self.toExist()
+
+    # (2) check
+    const content = fs.file(filePath).read()
+
+    for each t in texts do
+      if not content.includes(text(t)) then
+        throw(AssertionError($"file ${filePath}' should include '${t}'."))
+
+  /**
+   * Checks whether the file doesn't include one or more [texts].
+   */
+  @alias("notToContain")
+  pub fn notToInclude(texts: list(any)) -> self
+    # (1) pre
+    self.toExist()
+
+    # (2) check
+    const content = fs.file(filePath).read()
+
+    for each t in texts do
+      if content.includes(text(t)) then
+        throw(AssertionError($"file '${filePath}' should not include '${t}'."))
+
+  /**
+   * Checks whether the file is empty.
+   */
+  pub fn toBeEmpty() -> self
+    self.toExist()
+
+    if fs.file(filePath).len() > 0 then
+      throw(AssertionError($"file '${filePath}' should be empty."))
+
+  /**
+   * Checks whether the file is not empty.
+   */
+  pub fn notToBeEmpty() -> self
+    self.toExist()
+
+    if fs.file(filePath).len() == 0 then
+      throw(AssertionError($"file '${filePath}' should not be empty."))
+
+  /**
+   * Checks whether the file has JSON format.
+   */
+  pub fn toBeJson() -> self
+    self.toExist()
+
+    if [ok, err] ::= peval(json.decode(fs.file(filePath).read("utf-8"))); not ok then
+      throw(AssertionError($"file '${filePath}' should be JSON."))
+
+  /**
+   * Checks whether the file content is a [given] one.
+   */
+  @alias("equals")
+  pub fn equalTo(given: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf8") != given then
+      throw(AssertionError($"'${filePath}' file content should be '${given}'."))
+
+  /**
+   * Checks whether the file content is not a [given] one.
+   */
+  @alias("notEquals")
+  pub fn notEqualTo(given: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf8") == given then
+      throw(AssertionError($"'${filePath}' file content should not be '${given}'."))
+
+  /**
+   * Checks whether the file content is same as another [path].
+   */
+  pub fn equalToFile(path: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf8") != fs.file(path).read("utf8") then
+      throw(AssertionError($"file '${filePath}' should be same as file '${path}'."))
+
+  /**
+   * Checks whether the file content is not same as another [path].
+   */
+  pub fn notEqualToFile(path: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf8") == fs.file(path).read("utf8") then
+      throw(AssertionError($"file '${filePath}' should not be same as file '${path}'."))
+
+  /**
+   * Checks whether the file starts with a given prefix.
+   */
+  pub fn toStartWith(prefix: text) -> self
+    self.toExist()
+
+    if not fs.file(filePath).read("utf-8").startsWith(prefix) then
+      throw(AssertionError($"file '${filePath}' should start with '${prefix}'."))
+
+  /**
+   * Checks whether the file doesn't start with a given [prefix].
+   */
+  pub fn notToStartWith(prefix: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf-8").startsWith(prefix) then
+      throw(AssertionError($"file '${filePath}' should not start with '${prefix}'."))
+
+  /**
+   * Checks whether the file ends with a given [suffix].
+   */
+  pub fn toEndWith(suffix: text) -> self
+    self.toExist()
+
+    if not fs.file(filePath).read("utf-8").endsWith(suffix) then
+      throw(AssertionError($"file '${filePath}' should end with '${suffix}'."))
+
+  /**
+   * Checks whether the file doesn't end with a given [suffix].
+   */
+  pub fn notToEndWith(suffix: text) -> self
+    self.toExist()
+
+    if fs.file(filePath).read("utf-8").endsWith(suffix) then
+      throw(AssertionError($"file '${filePath}' should not end with '${suffix}'."))

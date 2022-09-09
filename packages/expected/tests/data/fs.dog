@@ -1,0 +1,7 @@
+export {
+  name = "fs"
+  members =
+    dir = nop
+    file = nop
+    plugin = nop  #this is never loaded; plugin name is reserved
+}

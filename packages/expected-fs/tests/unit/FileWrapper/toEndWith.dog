@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toEndWith()", proc()
+    test("when file ends with given suffix, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__dirname, "../../../package.json")
+        out = w.toEndWith("}\n")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file doesn't end with given suffix, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).toEndWith("xyz"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should end with")
+    end)
+  end)
+
+  suite("notToEndWith()", proc()
+    test("when file doesn't end with given suffix, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.notToEndWith("xyz")
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file ends with given suffix, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__dirname, "../../../package.json").notToEndWith("}\n"))
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not end with")
+    end)
+  end)
+end)

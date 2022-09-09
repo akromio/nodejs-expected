@@ -1,0 +1,31 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  dep://uuid
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeUuid()", proc()
+    test("when values are UUIDs, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = uuid.v1(), y = uuid.v4()).members("x", "y")
+        out = w.toBeUuid()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is not a UUID, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = uuid.v4(), y = "123").members("x", "y").toBeUuid())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be a valid UUID")
+    end)
+  end)
+end)

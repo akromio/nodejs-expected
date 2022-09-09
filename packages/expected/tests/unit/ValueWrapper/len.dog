@@ -1,0 +1,19 @@
+use (
+  {assert} = dep://chai
+  expected = ~
+)
+
+export suite(__filename, proc()
+  suite("len", proc()
+    test("when called, value wrapper with len must be returned", proc()
+      # (1) act
+      const (
+        value = "hello"
+        w = expected(value).len()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.value, len(value))
+    end)
+  end)
+end)

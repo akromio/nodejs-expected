@@ -1,0 +1,30 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("greaterThanOrEqualTo()", proc()
+    test("when values are greater than or equal to, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(x = 1, y = 2, z = 3).members("x", "y")
+        out = w.greaterThanOrEqualTo(0)
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some value is less than, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(x = 2, y = 1, z = 0).members("x", "y").greaterThanOrEqualTo(2))
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be greater than or equal to")
+    end)
+  end)
+end)

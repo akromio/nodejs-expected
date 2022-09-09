@@ -1,0 +1,57 @@
+{
+  "name": "@akromio/expected-fs",
+  "version": "0.1.0",
+  "description": "Plugin for asserting files and directories.",
+  "homepage": "https://akromio.com",
+  "author": {
+    "name": "Sia Codelabs",
+    "email": "hello@siacodelabs.com",
+    "url": "https://siacodelabs.com"
+  },
+  "contributors": [
+    {
+      "name": "Raúl G. González",
+      "email": "raulggonzalez@siacodelabs.com"
+    }
+  ],
+  "keywords": [
+    "assert",
+    "test"
+  ],
+  "bugs": {
+    "url": "https://github.com/akromio/expected/issues",
+    "email": "bugs@akromio.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akromio/expected.git"
+  },
+  "preferGlobal": false,
+  "type": "commonjs",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">= 14",
+    "npm": ">= 6"
+  },
+  "dependencies": {
+    "@akromio/expected-helpers": "^0.1.0",
+    "@dogmalang/core": "^1.0.0-rc18.0",
+    "@dogmalang/fs.sync": "^0.2.0",
+    "@dogmalang/path": "^0.1.0"
+  },
+  "devDependencies": {
+    "@akromio/expected": "^0.1.0"
+  },
+  "scripts": {
+    "lint": "dogmac check src tests && tsc src/index.d.ts",
+    "build": "npm run build/src",
+    "build/src": "rm -rf dist/ && dogmac js -o dist/cjs/ src && babel -d dist dist && cp src/*.d.ts dist/cjs/",
+    "test": "npm run test/build && mocha --config .mocharc.yaml",
+    "test/build": "rm -rf ./__tests__ && dogmac js -o __tests__ tests && babel -d __tests__ __tests__ && cp -r tests/data __tests__/data",
+    "cov": "c8 mocha --config .mocharc.yaml"
+  }
+}

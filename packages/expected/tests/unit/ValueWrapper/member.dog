@@ -1,0 +1,59 @@
+use (
+  {assert} = dep://chai
+  expected = ~
+)
+
+export suite(__filename, proc()
+  suite("member", proc()
+    test("when member found, value wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = 22, z = 33}
+        w = expected(value).member("y")
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, 22)
+      assert.strictEqual(w.equalTo(22), w)
+    end)
+
+    test("when member not found, nil wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = {}
+        w = expected(value).member("a")
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, nil)
+      assert.strictEqual(w.toBeNil(), w)
+    end)
+  end)
+
+  suite("members", proc()
+    test("when members found, values wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = 22, z = 33}
+        w = expected(value).members("x", "y")
+      )
+
+      # (2) assessment
+      assert.equal(typename(w), "ValuesWrapper")
+    end)
+
+    test("when originalValue is not nil, this must be used as root", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = 22, z = 33}
+        w = expected(value).member("x").members("x", "y")
+      )
+
+      # (2) assessment
+      assert.equal(typename(w), "ValuesWrapper")
+      assert.strictEqual(w.originalValue, value)
+    end)
+  end)
+end)

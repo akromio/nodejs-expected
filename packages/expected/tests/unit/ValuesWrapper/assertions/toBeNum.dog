@@ -1,0 +1,61 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeNum()", proc()
+    test("when members are numeric, wrapper must be returned", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = 22, z = 33}
+        w = expected(value).members("x", "y")
+        out = w.toBeNum()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some member isn't numeric, error must be raised", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = "22", z = "33"}
+        out = peval(expected(value).members("x", "y").toBeNum())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], Error)
+      assert.include(out[1].message, "should be a number")
+    end)
+  end)
+
+  suite("notToBeNum()", proc()
+    test("when members are not numeric, wrapper must be returned", proc()
+      # (1) act
+      const (
+        value = {x = "11", y = "22", z = "33"}
+        w = expected(value).members("x", "y")
+        out = w.notToBeNum()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when some member is numeric, error must be raised", proc()
+      # (1) act
+      const (
+        value = {x = 11, y = "22", z = "33"}
+        out = peval(expected(value).members("x", "y").notToBeNum())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], Error)
+      assert.include(out[1].message, "should not be a number")
+    end)
+  end)
+end)

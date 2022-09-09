@@ -1,0 +1,361 @@
+use (
+  dep://assert
+  alias://get
+  dep://uuid
+  Ajv = dep://ajv
+  {format, color} = alias://helpers
+  AssertionError
+)
+
+/**
+ * A wrapper for several values to perform assertions with them.
+ */
+@Self
+export struct ValuesWrapper
+  /**
+   * The values to assert.
+   */
+  @hidden @inject
+  pub const values: list
+
+  /**
+   * The original object, used when a wrapped created with member() from other wrapper.
+   */
+  @hidden @inject
+  pub const originalValue
+
+  /**
+   * Checks whether the values are instances of a given [Type].
+   */
+  @alias("toBeInstanceOf")
+  pub fn toBe(Type) -> self
+    for each value in values do
+      if value is not Type then
+        throw(AssertionError($"${format(value)} should be instance of ${color(Type.name)}."))
+
+  /**
+   * Checks whether the values are not instances of a given [Type].
+   */
+  @alias("notToBeInstanceOf")
+  pub fn notToBe(Type) -> self
+    for each value in values do
+      if value is Type then
+        throw(AssertionError($"${format(value)} should not be instance of ${color(Type.name)}."))
+
+  /**
+   * Checks whether the values are null or nil.
+   */
+  @alias("toBeNull")
+  pub fn toBeNil() -> self
+    for each value in values do
+      if value != nil then
+        throw(AssertionError($"${format(value)} should be nil/null."))
+
+  /**
+   * Checks whether the values are not null or nil.
+   */
+  @alias("notToBeNull")
+  pub fn notToBeNil() -> self
+    for each value in values do
+      if value == nil then
+        throw(AssertionError("value should not be nil/null."))
+
+  /**
+   * Check whether the values are a boolean.
+   */
+  @alias("toBeBoolean")
+  pub fn toBeBool() -> self
+    for each value in values do
+      if value is not bool then
+        throw(AssertionError($"${format(value)} should be boolean."))
+
+  /**
+   * Checks whether the values are not a boolean.
+   */
+  @alias("notToBeBoolean")
+  pub fn notToBeBool() -> self
+    for each value in values do
+      if value is bool then
+        throw(AssertionError($"${format(value)} should not be boolean."))
+
+  /**
+   * Checks whether the values are dates.
+   */
+  @alias("toBeDate")
+  pub fn toBeTimestamp() -> self
+    for each value in values do
+      if value is not timestamp then
+        throw(AssertionError($"${format(value)} should be date."))
+
+  /**
+   * Checks whether the values are not dates.
+   */
+  @alias("notToBeDate")
+  pub fn notToBeTimestamp() -> self
+    for each value in values do
+      if value is timestamp then
+        throw(AssertionError($"${format(value)} should not be date."))
+
+  /**
+   * Checks whether the values are strings or texts.
+   */
+  @alias("toBeString")
+  pub fn toBeText() -> self
+    for each value in values do
+      if value is not text then
+        throw(AssertionError($"${format(value)} should be text/string."))
+
+  /**
+   * Checks whether the values are not strings or texts.
+   */
+  @alias("notToBeString")
+  pub fn notToBeText() -> self
+    for each value in values do
+      if value is text then
+        throw(AssertionError($"${format(value)} should not be text/string."))
+
+  /**
+   * Checks whether the values are numbers.
+   */
+  @alias("toBeNumber")
+  pub fn toBeNum() -> self
+    for each value in values do
+      if value is not num then
+        throw(AssertionError($"${format(value)} should be a number."))
+
+  /**
+   * Checks whether the values are not numbers.
+   */
+  @alias("notToBeNumber")
+  pub fn notToBeNum() -> self
+    for each value in values do
+      if value is num then
+        throw(AssertionError($"${format(value)} should not be a number."))
+
+  /**
+   * Checks whether the values are arrays or lists.
+   */
+  @alias("toBeArray")
+  pub fn toBeList() -> self
+    for each value in values do
+      if value is not list then
+        throw(AssertionError($"${format(value)} should be an array or list."))
+
+  /**
+   * Checks whether the values are not arrays or lists.
+   */
+  @alias("notToBeArray")
+  pub fn notToBeList() -> self
+    for each value in values do
+      if value is list then
+        throw(AssertionError($"${format(value)} should not be an array or list."))
+
+  /**
+   * Checks whether the values are sets.
+   */
+  pub fn toBeSet() -> self
+    for each value in values do
+      if value is not set then
+        throw(AssertionError($"${format(value)} should be a set."))
+
+  /**
+   * Checks whether the values are not sets.
+   */
+  pub fn notToBeSet() -> self
+    for each value in values do
+      if value is set then
+        throw(AssertionError($"${format(value)} should not be a set."))
+
+  /**
+   * Checks whether the values objects or maps.
+   */
+  @alias("toBeObject")
+  pub fn toBeMap() -> self
+    for each value in values do
+      if value is not map then
+        throw(AssertionError($"${format(value)} should be an object or map."))
+
+  /**
+   * Checks whether the values are not objects or maps.
+   */
+  @alias("notToBeObject")
+  pub fn notToBeMap() -> self
+    for each value in values do
+      if value is map then
+        throw(AssertionError($"${format(value)} should not be an object or map."))
+
+  /**
+   * Checks whether the values are functions.
+   */
+  @alias("toBeFunction")
+  pub fn toBeFn() -> self
+    for each value in values do
+      if value is not func then
+        throw(AssertionError($"${format(value)} should be a function."))
+
+  /**
+   * Checks whether the values are not functions.
+   */
+  @alias("notToBeFunction")
+  pub fn notToBeFn() -> self
+    for each value in values do
+      if value is func then
+        throw(AssertionError($"${format(value)} should not be a function."))
+
+  /**
+   * Checks whether the values are callable.
+   */
+  pub fn toBeCallable() -> self
+    for each value in values do
+      if value is not func then
+        throw(AssertionError($"${format(value)} should be callable."))
+
+  /**
+   * Checks whether the values are not callable.
+   */
+  pub fn notToBeCallable() -> self
+    for each value in values do
+      if value is func then
+        throw(AssertionError($"${format(value)} should not be callable."))
+
+  /**
+   * Checks whether the values are less than [another].
+   */
+  pub fn lessThan(another) -> self
+    for each value in values do
+      if typename(value) != typename(another) or value >= another then
+        throw(AssertionError($"${format(value)} should be less than ${format(another)}."))
+
+  /**
+   * Checks whether the values are less than or equal to [another].
+   */
+  pub fn lessThanOrEqualTo(another) -> self
+    for each value in values do
+      if typename(value) != typename(another) or value > another then
+        throw(AssertionError($"${format(value)} should be less than or equal to ${format(another)}."))
+
+  /**
+   * Checks whether the values are greater than or equal to [another].
+   */
+  pub fn greaterThan(another) -> self
+    for each value in values do
+      if typename(value) != typename(another) or typename(value) in ["bool"] or value <= another then
+        throw(AssertionError($"${format(value)} should be greater than ${format(another)}."))
+
+  /**
+   * Checks whether the values are greater than or equal to [another].
+   */
+  pub fn greaterThanOrEqualTo(another) -> self
+    for each value in values do
+      if typename(value) != typename(another) or typename(value) in ["bool"] or value < another then
+        throw(AssertionError($"${format(value)} should be greater than or equal to ${format(another)}."))
+
+  /**
+   * Checks whether the values are between two values.
+   */
+  pub fn 'between'(val1?, val2?) -> self
+    for each value in values do
+      if typename(value) != typename(val1) or typename(value) != typename(val2) or value < val1 or value > val2 then
+        throw(AssertionError($"${format(value)} should be between ${format(val1)} and ${format(val2)}."))
+
+  /**
+   * Checks whether the values are not between two values.
+   */
+  pub fn notBetween(val1?, val2?) -> self
+    for each value in values do
+      if typename(value) == typename(val1) and typename(value) == typename(val2) and value >= val1 and value <= val2 then
+        throw(AssertionError($"${format(value)} should not be between ${format(val1)} and ${format(val2)}."))
+
+  /**
+   * Checks whether the values are into [another].
+   */
+  pub fn into(another: list) -> self
+    for each value in values do
+      if not another.includes(value) then
+        throw(AssertionError($"${format(value)} should be in ${format(another)}."))
+
+  /**
+   * Checks whether the values are not into [another].
+   */
+  pub fn notInto(another: list) -> self
+    for each value in values do
+      if another.includes(value) then
+        throw(AssertionError($"${format(value)} should not be in ${format(another)}."))
+
+  /**
+   * Checks whether the values have one or several [members].
+   */
+  pub fn toHave(members: (text | list | map)) -> self
+    for each value in values do
+      # (1) arguments
+      if members is not [list, map] then members = [members]
+
+      # (2) check
+      if members is list then
+        for each mem in members do
+          if value[mem] == nil then
+            throw(AssertionError($"${format(value)} should have member ${color(mem)}."))
+      else
+        for each mem, val in members do
+          if [ok, received] ::= peval(assert.deepEqual(value[mem], val)); not ok then
+            throw(AssertionError($"${format(value)} should have ${color(mem)} to ${format(val)}."))
+
+  /**
+   * Checks whether the values don't have one or several [members].
+   */
+  pub fn notToHave(members: (text | list | map)) -> self
+    for each value in values do
+      # (1) arguments
+      if members is not [list, map] then members = [members]
+
+      # (2) check
+      if members is list then
+        for each mem in members do
+          if value[mem] !== undefined then
+            throw(AssertionError($"${format(value)} should not have member ${color(mem)}."))
+      else
+        for each mem, val in members do
+          if received ::= value[mem]; received == val then
+            throw(AssertionError($"${format(value)} should not have ${color(mem)} to ${format(val)}."))
+
+  /**
+   * Checks whether the values are empty, that is, length is 0 or empty string.
+   */
+  pub fn toBeEmpty() -> self
+    for each value in values do
+      if len(value) != 0 then
+        throw(AssertionError($"${format(value)} should be empty."))
+
+  /**
+   * Checks whether the values are not empty, that is, it has items.
+   */
+  pub fn notToBeEmpty() -> self
+    for each value in values do
+      if typename(value) in ["bool", "num"] or len(value) == 0 then
+        throw(AssertionError($"${format(value)} should not be empty."))
+
+  /**
+   * Checks whether the values match a given pattern.
+   */
+  @alias("toMatch")
+  pub fn 'like'(pattern: text) -> self
+    for each value in values do
+      if not re(pattern).test(value) then
+        throw(AssertionError($"${format(value)} should be like ${format(pattern)}."))
+
+  /**
+   * Checks whether the values do not match a given [pattern].
+   */
+  @alias("notToMatch")
+  pub fn notLike(pattern: text) -> self
+    for each value in values do
+      if re(pattern).test(value) then
+        throw(AssertionError($"${format(value)} should not be like ${format(pattern)}."))
+
+  /**
+   * Checks whether the values are valid UUIDs.
+   */
+  pub fn toBeUuid() -> self
+    for each value in values do
+      if not uuid.validate(value) then
+        throw(AssertionError($"${format(value)} should be a valid UUID."))

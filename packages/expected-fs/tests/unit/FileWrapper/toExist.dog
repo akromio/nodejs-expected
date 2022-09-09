@@ -1,0 +1,48 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toExist()", proc()
+    test("when file exists, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file(__filename)
+        out = w.toExist()
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file doesn't exist, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file("unknown").toExist())
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should exist")
+    end)
+  end)
+
+  suite("notToExist()", proc()
+    test("when file doesn't exist, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected.file("unknown")
+        out = w.notToExist()
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when file exists, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected.file(__filename).notToExist())
+
+      # (2) assessment
+      expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not exist")
+    end)
+  end)
+end)

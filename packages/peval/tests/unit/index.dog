@@ -1,0 +1,22 @@
+use (
+  {assert} = dep://chai
+  pEval = ~
+)
+
+export suite(__filename, proc()
+  test("when no error raised, [true, returned], must be returned", proc()
+    # (1) act
+    const out = pEval(fn() = 1234 end)
+
+    # (2) assessment
+    assert.deepEqual(out, [true, 1234])
+  end)
+
+  test("when error raised, [false, error] must be returned", proc()
+    # (1) act
+    const out = pEval(proc() throw("error!") end)
+
+    # (2) assessment
+    assert.deepEqual(out, [false, "error!"])
+  end)
+end)

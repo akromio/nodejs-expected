@@ -1,0 +1,15 @@
+use (
+  pkg = ../../package
+  alias://path
+  DirWrapper
+  FileWrapper
+  FilesWrapper
+)
+
+export {
+  name = pkg.name
+  members =
+    dir = fn(...args) = DirWrapper(dirPath = path.join(...args)) end
+    file = fn(...args) = FileWrapper(filePath = path.join(...args)) end
+    files = fn(...args) = FilesWrapper(filePaths = args) end
+}

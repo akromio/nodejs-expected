@@ -1,0 +1,11 @@
+uses:
+  assert:
+    js: assert
+  expected:
+    js: "@akromio/expected"
+  fs:
+    js: "@dogmalang/fs.sync"
+  helpers:
+    js: "@akromio/expected-helpers"
+  path:
+    js: "@dogmalang/path"
