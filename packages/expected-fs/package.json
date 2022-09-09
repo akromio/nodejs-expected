@@ -40,8 +40,7 @@
   "dependencies": {
     "@akromio/expected-helpers": "^0.1.0",
     "@dogmalang/core": "^1.0.0-rc18.0",
-    "@dogmalang/fs.sync": "^0.2.0",
-    "@dogmalang/path": "^0.1.0"
+    "@dogmalang/fs.sync": "^0.2.0"
   },
   "devDependencies": {
     "@akromio/expected": "^0.1.0"

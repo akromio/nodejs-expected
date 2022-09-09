@@ -8,7 +8,7 @@ const {
 
 const expected = _core.dogma.use(require("@akromio/expected"));
 
-const path = _core.dogma.use(require("@dogmalang/path"));
+const path = _core.dogma.use(require("path"));
 
 suite(__filename, () => {
   {

@@ -2,7 +2,7 @@
 
 var _core = require("@dogmalang/core");
 
-const path = _core.dogma.use(require("@dogmalang/path"));
+const path = _core.dogma.use(require("path"));
 
 const fs = _core.dogma.use(require("@dogmalang/fs.sync"));
 

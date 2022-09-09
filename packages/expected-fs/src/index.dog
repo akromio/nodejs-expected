@@ -1,6 +1,6 @@
 use (
   pkg = ../../package
-  alias://path
+  dep://path
   DirWrapper
   FileWrapper
   FilesWrapper

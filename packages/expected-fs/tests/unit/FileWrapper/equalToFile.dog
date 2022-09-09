@@ -1,7 +1,7 @@
 use (
   {AssertionError} = dep://assert
   alias://expected
-  alias://path
+  dep://path
 )
 
 suite(__filename, proc()
