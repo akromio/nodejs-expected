@@ -251,7 +251,7 @@ FileWrapper.prototype.toStartWith = function (prefix) {
   {
     this.toExist();
 
-    if (!fs.file(filePath).read("utf-8").startsWith(prefix)) {
+    if (!fs.file(filePath).read("utf8").startsWith(prefix)) {
       _core.dogma.raise(AssertionError(`file '${filePath}' should start with '${prefix}'.`));
     }
   }
@@ -270,7 +270,7 @@ FileWrapper.prototype.notToStartWith = function (prefix) {
   {
     this.toExist();
 
-    if (fs.file(filePath).read("utf-8").startsWith(prefix)) {
+    if (fs.file(filePath).read("utf8").startsWith(prefix)) {
       _core.dogma.raise(AssertionError(`file '${filePath}' should not start with '${prefix}'.`));
     }
   }
@@ -289,7 +289,7 @@ FileWrapper.prototype.toEndWith = function (suffix) {
   {
     this.toExist();
 
-    if (!fs.file(filePath).read("utf-8").endsWith(suffix)) {
+    if (!fs.file(filePath).read("utf8").endsWith(suffix)) {
       _core.dogma.raise(AssertionError(`file '${filePath}' should end with '${suffix}'.`));
     }
   }
@@ -308,7 +308,7 @@ FileWrapper.prototype.notToEndWith = function (suffix) {
   {
     this.toExist();
 
-    if (fs.file(filePath).read("utf-8").endsWith(suffix)) {
+    if (fs.file(filePath).read("utf8").endsWith(suffix)) {
       _core.dogma.raise(AssertionError(`file '${filePath}' should not end with '${suffix}'.`));
     }
   }

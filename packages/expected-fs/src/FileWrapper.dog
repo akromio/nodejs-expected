@@ -128,7 +128,7 @@ export struct FileWrapper
   pub fn toStartWith(prefix: text) -> self
     self.toExist()
 
-    if not fs.file(filePath).read("utf-8").startsWith(prefix) then
+    if not fs.file(filePath).read("utf8").startsWith(prefix) then
       throw(AssertionError($"file '${filePath}' should start with '${prefix}'."))
 
   /**
@@ -137,7 +137,7 @@ export struct FileWrapper
   pub fn notToStartWith(prefix: text) -> self
     self.toExist()
 
-    if fs.file(filePath).read("utf-8").startsWith(prefix) then
+    if fs.file(filePath).read("utf8").startsWith(prefix) then
       throw(AssertionError($"file '${filePath}' should not start with '${prefix}'."))
 
   /**
@@ -146,7 +146,7 @@ export struct FileWrapper
   pub fn toEndWith(suffix: text) -> self
     self.toExist()
 
-    if not fs.file(filePath).read("utf-8").endsWith(suffix) then
+    if not fs.file(filePath).read("utf8").endsWith(suffix) then
       throw(AssertionError($"file '${filePath}' should end with '${suffix}'."))
 
   /**
@@ -155,5 +155,5 @@ export struct FileWrapper
   pub fn notToEndWith(suffix: text) -> self
     self.toExist()
 
-    if fs.file(filePath).read("utf-8").endsWith(suffix) then
+    if fs.file(filePath).read("utf8").endsWith(suffix) then
       throw(AssertionError($"file '${filePath}' should not end with '${suffix}'."))
