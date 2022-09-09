@@ -1,0 +1,28 @@
+name: Run the unit tests
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  runTests:
+    name: Node.js ${{ matrix.nodeVersion }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        nodeVersion: [16.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Node.js ${{ matrix.nodeVersion }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.nodeVersion }}
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm run cov
