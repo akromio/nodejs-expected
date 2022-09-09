@@ -39,7 +39,7 @@ suite(__filename, proc()
 
     test("when file ends with given suffix, assertion error must be raised", proc()
       # (1) act
-      const out = peval(expected.file(__dirname, "../../../package.json").notToEndWith("}\n"))
+      const out = peval(expected.file(__filename).notToEndWith(";"))
 
       # (2) assessment
       expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not end with")

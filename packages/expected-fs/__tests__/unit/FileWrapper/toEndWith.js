@@ -42,7 +42,7 @@ suite(__filename, () => {
         test("when file ends with given suffix, assertion error must be raised", () => {
           {
             const out = _core.dogma.peval(() => {
-              return expected.file(__dirname, "../../../package.json").notToEndWith("}\n");
+              return expected.file(__filename).notToEndWith(";");
             });
 
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not end with");
