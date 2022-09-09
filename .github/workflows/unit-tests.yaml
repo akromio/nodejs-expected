@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.nodeVersion }}
       
       - name: Install dependencies
-        run: npm i
+        run: npm i && npm run bootstrap
       
       - name: Run tests
         run: npm run cov
