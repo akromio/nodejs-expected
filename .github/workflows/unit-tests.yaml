@@ -2,7 +2,8 @@ name: Run the unit tests
 
 on:
   push:
-    branches: [master, chore/github-actions]
+    branches:
+      - "**"
 
 jobs:
   runTests:
