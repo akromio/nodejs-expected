@@ -6,20 +6,21 @@ on:
 
 jobs:
   runTests:
-    name: Node.js ${{ matrix.nodeVersion }}
-    runs-on: ubuntu-latest
+    name: Node.js ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        nodeVersion: [16.x, 18.x]
+        node: [16.x, 18.x]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Node.js ${{ matrix.nodeVersion }}
+      - name: Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.nodeVersion }}
+          node-version: ${{ matrix.node }}
       
       - name: Install dependencies
         run: npm i && npm run bootstrap
