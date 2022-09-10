@@ -1,0 +1,33 @@
+name: Publish packages on NPM
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node: [18.x]
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://registry.npmjs.org
+      
+      - name: Install dependencies
+        run: npm i && npm run bootstrap
+      
+      - name: Publish packages
+        run: lerna publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
