@@ -1,19 +1,28 @@
 name: Publish packages on NPM
 
 on:
-  release:
-    types:
-      - created
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Version type to publish
+        required: true
+        type: choice
+        options: [major, minor, patch]
+
+env:
+  os: ubuntu-latest
+  node: 18.x
+  version: ${{ inputs.release }}
 
 jobs:
   publish:
-    name: Publish
+    name: Publish packages
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        node: [18.x]
-        os: [ubuntu-latest]
+        node: [env.node]
+        os: [env.os]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,9 +34,23 @@ jobs:
           registry-url: https://registry.npmjs.org
       
       - name: Install dependencies
-        run: npm i && npm run bootstrap
+        run: npm ci && npm run bootstrap
+      
+      - name: Set version to publish
+        run: npm lerna version -- --yes ${{ env.version }}
       
       - name: Publish packages
-        run: lerna publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run publish -- --yes
+
+      - name: Set Git metadata
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      
+      - name: Commit changes on Git
+        run: |
+          git add .
+          git commit -m "Automation: publish version"
+          git push
