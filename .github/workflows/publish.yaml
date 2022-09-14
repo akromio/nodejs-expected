@@ -40,12 +40,12 @@ jobs:
         run: npm ci && npm run bootstrap
       
       - name: Set version to publish
-        run: npm run version -- --yes --no-git-tag-version --no-push ${{ env.version }}
+        run: npm run version -- --yes --no-push ${{ env.version }}
       
       - name: Publish packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run publish -- --yes
+        run: npm run publish -- --yes --from-package
       
       - name: Push changes
         run: git push --force
