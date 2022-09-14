@@ -10,8 +10,6 @@ on:
         options: [major, minor, patch]
 
 env:
-  os: ubuntu-latest
-  node: 18.x
   version: ${{ inputs.release }}
 
 jobs:
@@ -21,8 +19,8 @@ jobs:
 
     strategy:
       matrix:
-        node: [$node]
-        os: [$os]
+        node: [18.x]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3
