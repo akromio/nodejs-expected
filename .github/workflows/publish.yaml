@@ -35,7 +35,7 @@ jobs:
         run: npm ci && npm run bootstrap
       
       - name: Set version to publish
-        run: npm lerna version -- --yes ${{ env.version }}
+        run: npm run version -- --yes ${{ env.version }}
       
       - name: Publish packages
         env:
