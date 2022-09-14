@@ -21,8 +21,8 @@ jobs:
 
     strategy:
       matrix:
-        node: ["${{ env.node}}"]
-        os: ["${{ env.os }}"]
+        node: [$node]
+        os: [$os]
 
     steps:
       - uses: actions/checkout@v3
