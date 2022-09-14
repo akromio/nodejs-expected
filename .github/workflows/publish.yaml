@@ -45,7 +45,7 @@ jobs:
       - name: Publish packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run publish -- from-package --access=public --yes
+        run: npm run publish -- from-package --yes
       
       - name: Push changes
         run: git push --force
