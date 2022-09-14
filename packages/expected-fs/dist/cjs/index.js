@@ -4,7 +4,7 @@ var _core = require("@dogmalang/core");
 
 const pkg = _core.dogma.use(require("../../package"));
 
-const path = _core.dogma.use(require("@dogmalang/path"));
+const path = _core.dogma.use(require("path"));
 
 const DirWrapper = _core.dogma.use(require("./DirWrapper"));
 

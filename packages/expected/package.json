@@ -45,9 +45,6 @@
     "lodash.get": "^4.4.2",
     "uuid": "^8.3.2"
   },
-  "devDependencies": {
-    "@dogmalang/path": "^0.1.0"
-  },
   "scripts": {
     "lint": "dogmac check src tests && tsc src/index.d.ts",
     "build": "npm run build/src",
