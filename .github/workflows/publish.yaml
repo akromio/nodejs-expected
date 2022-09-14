@@ -40,15 +40,11 @@ jobs:
         run: npm ci && npm run bootstrap
       
       - name: Set version to publish
-        run: npm run version -- --yes ${{ env.version }}
+        run: |
+          npm run version -- --yes --no-push ${{ env.version }}
+          git push --force
       
       - name: Publish packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run publish -- --yes
-
-      - name: Commit changes on Git
-        run: |
-          git add .
-          git commit -m "Automation: publish version"
-          git push
