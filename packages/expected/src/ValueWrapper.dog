@@ -3,6 +3,7 @@ use (
   dep://chalk
   alias://get
   dep://uuid
+  dep://stream
   Ajv = dep://ajv
   {format, color} = alias://helpers
   AssertionError
@@ -150,6 +151,34 @@ export struct ValueWrapper
   pub fn notToBe(Type) -> self
     if value is Type then
       throw(AssertionError($"${format(value)} should not be instance of ${color(Type.name)}."))
+  
+  /**
+   * Checks whether the value is a duplex stream.
+   */
+  pub fn toBeDuplexStream() -> self
+    if value is not stream.Duplex then
+      throw(AssertionError($"${format(value)} should be a duplex stream."))
+  
+  /**
+   * Checks wether the value is not a duplex stream.
+   */
+  pub fn notToBeDuplexStream() -> self
+    if value is stream.Duplex then
+      throw(AssertionError($"${format(value)} should not be a duplex stream."))
+  
+  /**
+   * Checks whether the value is a readable stream.
+   */
+  pub fn toBeReadableStream() -> self
+    if not stream.isReadable(value) then
+      throw(AssertionError($"${format(value)} should be a readable stream."))
+  
+  /**
+   * Checks whether the value is not a readable stream.
+   */
+  pub fn notToBeReadableStream() -> self
+    if stream.isReadable(value) then
+      throw(AssertionError($"${format(value)} should not be a readable stream."))
 
   /**
    * Checks whether the value is null or nil.

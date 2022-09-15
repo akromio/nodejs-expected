@@ -95,6 +95,26 @@ export default class ValueWrapper {
   notToBe(Type: any): this
 
   /**
+   * Checks whether the value is a duplex stream.
+   */
+  toBeDuplexStream(): this
+
+  /**
+   * Checks whether the value is not a duplex stream.
+   */
+  notToBeDuplexStream(): this
+
+  /**
+   * Checks whether the value is a readable stream.
+   */
+  toBeReadableStream(): this
+
+  /**
+   * Checks whether the value is not a readable stream.
+   */
+  notToBeReadableStream(): this
+
+  /**
    * Checks whether the value is null or nil.
    */
   toBeNull(): this

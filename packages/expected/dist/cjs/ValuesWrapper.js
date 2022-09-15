@@ -19,8 +19,10 @@ const AssertionError = _core.dogma.use(require("./AssertionError"));
 
 const $ValuesWrapper = class ValuesWrapper {
   constructor(_) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (_ == null) _ = {};
+    /* c8 ignore stop */
+
     (0, _core.expect)('values', _['values'], _core.list);
     Object.defineProperty(this, 'values', {
       value: (0, _core.coalesce)(_['values'], null),
