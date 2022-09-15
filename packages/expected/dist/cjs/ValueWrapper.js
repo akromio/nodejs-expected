@@ -10,6 +10,8 @@ const get = _core.dogma.use(require("lodash.get"));
 
 const uuid = _core.dogma.use(require("uuid"));
 
+const stream = _core.dogma.use(require("stream"));
+
 const Ajv = _core.dogma.use(require("ajv"));
 
 const {
@@ -23,8 +25,10 @@ const ValuesWrapper = _core.dogma.use(require("./ValuesWrapper"));
 
 const $ValueWrapper = class ValueWrapper {
   constructor(_) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (_ == null) _ = {};
+    /* c8 ignore stop */
+
     Object.defineProperty(this, 'value', {
       value: (0, _core.coalesce)(_['value'], null),
       writable: false,
@@ -294,6 +298,62 @@ ValueWrapper.prototype.notToBeInstanceOf = ValueWrapper.prototype.notToBe = func
   {
     if (_core.dogma.is(value, Type)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not be instance of ${color(Type.name)}.`));
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.toBeDuplexStream = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.isNot(value, stream.Duplex)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should be a duplex stream.`));
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.notToBeDuplexStream = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.is(value, stream.Duplex)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should not be a duplex stream.`));
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.toBeReadableStream = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (!stream.isReadable(value)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should be a readable stream.`));
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.notToBeReadableStream = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (stream.isReadable(value)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should not be a readable stream.`));
     }
   }
   return this;

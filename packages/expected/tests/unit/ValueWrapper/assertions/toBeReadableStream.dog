@@ -1,0 +1,60 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  {Duplex} = dep://stream
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeReadableStream()", proc()
+    test("when readable stream, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(native("new Duplex()"))
+        out = w.toBeReadableStream()
+      )
+
+      # (2) assessment
+      assert.strictEqual(out, w)
+    end)
+
+    test("when not readable stream, error must be returned", proc()
+      # (1) act
+      const (
+        w = expected("")
+        out = peval(w.toBeReadableStream())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be a readable stream")
+    end)
+  end)
+
+  suite("notToBeReadableStream()", proc()
+    test("when not dreadableuplex stream, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("")
+        out = w.notToBeReadableStream()
+      )
+
+      # (2) assessment
+      assert.strictEqual(out, w)
+    end)
+
+    test("when readable stream, error must be returned", proc()
+      # (1) act
+      const (
+        w = expected(native("new Duplex()"))
+        out = peval(w.notToBeReadableStream())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be a readable stream")
+    end)
+  end)
+end)
