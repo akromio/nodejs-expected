@@ -1,0 +1,50 @@
+use (
+  {deepStrictEqual as equal} = dep://assert
+  {format, color} = alias://helpers
+)
+
+/**
+ * Checks whether two items are similar.
+ *
+ * Two lists are similar if these contain the same
+ * items in any order.
+ *
+ * @dev
+ * We traverse the first array and we search its items in the second one.
+ * When an item is found, this is added to a list of items already
+ * found. If not found, error will be raised.
+ */
+export fn similarTo(value1?, value2?) -> err
+  if value1 is not list and value2 is not list then
+    if not peval(equal(value1, value2))[0] then
+      err = Error($"${format(value1)} should be similar to ${format(value2)}.")
+  else
+    const (
+      arr1 = value1
+      arr2 = value2
+    )
+
+    if len(arr1) != len(arr2) then
+      err = Error($"${format(arr1)} should have the same length than ${format(arr2)}.")
+    else
+      const usedIndexes = []
+
+      for i = 0; i < len(arr1); i += 1 do
+        var (
+          item1 ::= arr1[i]
+          found = false
+        )
+
+        for j = 0; j < len(arr2); j += 1 do
+          if j not in usedIndexes then
+            if peval(equal(item1, arr2[j]))[0] then
+              usedIndexes.push(j)
+              found = true
+              break
+        
+        if not found then
+          err = Error(
+            $"${format(item1)} (ix: ${color(i)}) from (${format(arr1)} should be in (${format(arr2)})."
+          )
+
+          break

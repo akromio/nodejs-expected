@@ -6,6 +6,7 @@ use (
   dep://stream
   Ajv = dep://ajv
   {format, color} = alias://helpers
+  utils/similarTo
   AssertionError
   ValuesWrapper
 )
@@ -512,6 +513,20 @@ export struct ValueWrapper
   pub fn notToHaveLength(size: num) -> self
     if received ::= len(value); received == size then
       throw(AssertionError($"${format(value)} should not have length to ${color(size)}."))
+  
+  /**
+   * Checks whether the value is similar to other.
+   */
+  pub fn similarTo(other?) -> self
+    if err := similarTo(value, other) then
+      throw(AssertionError(err.message))
+  
+  /**
+   * Checks whether the value is not similar to other.
+   */
+  pub fn notSimilarTo(other?) -> self
+    if err := similarTo(value, other); not err then
+      throw(AssertionError($"${format(value)} should not be similar to ${format(other)}."))
 
   /**
    * Checks whether the value matches a given pattern.
