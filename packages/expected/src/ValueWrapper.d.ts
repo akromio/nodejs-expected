@@ -430,6 +430,16 @@ export default class ValueWrapper {
   notToHaveLen(size: num | list): this
 
   /**
+   * Checks whether the value is similar to other.
+   */
+  similarTo(other: any): this
+
+  /**
+   * Checks whether the value is not similar to other.
+   */
+  notSimilarTo(other: any): this
+
+  /**
    * Checks whether the value matches a given pattern.
    */
   toMatch(pattern: text): this

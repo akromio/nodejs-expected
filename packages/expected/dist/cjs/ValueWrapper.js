@@ -19,6 +19,8 @@ const {
   color
 } = _core.dogma.use(require("@akromio/expected-helpers"));
 
+const similarTo = _core.dogma.use(require("./utils/similarTo"));
+
 const AssertionError = _core.dogma.use(require("./AssertionError"));
 
 const ValuesWrapper = _core.dogma.use(require("./ValuesWrapper"));
@@ -39,9 +41,11 @@ const $ValueWrapper = class ValueWrapper {
       writable: false,
       enumerable: false
     });
-    /* c8 ignore next */
+    /* c8 ignore start */
 
     if (_['fulfilled'] != null) (0, _core.expect)('fulfilled', _['fulfilled'], _core.bool);
+    /* c8 ignore stop */
+
     Object.defineProperty(this, 'fulfilled', {
       value: (0, _core.coalesce)(_['fulfilled'], null),
       writable: false,
@@ -1026,6 +1030,42 @@ ValueWrapper.prototype.notToHaveLen = ValueWrapper.prototype.notToHaveLength = f
 
       if (received == size) {
         _core.dogma.raise(AssertionError(`${format(value)} should not have length to ${color(size)}.`));
+      }
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.similarTo = function (other) {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    {
+      let err = similarTo(value, other);
+
+      if (err) {
+        _core.dogma.raise(AssertionError(err.message));
+      }
+    }
+  }
+  return this;
+};
+
+ValueWrapper.prototype.notSimilarTo = function (other) {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    {
+      let err = similarTo(value, other);
+
+      if (!err) {
+        _core.dogma.raise(AssertionError(`${format(value)} should not be similar to ${format(other)}.`));
       }
     }
   }

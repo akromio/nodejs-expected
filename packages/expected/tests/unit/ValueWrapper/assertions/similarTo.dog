@@ -1,0 +1,124 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("similarTo()", proc()
+    test("when value1 is similar to value2, wrapper must be returned", proc()
+      # (1) act
+      const (
+        value1 = "hello"
+        value2 = "hello"
+        w = expected(value1)
+        out = w.similarTo(value2)
+      )
+
+      # (2) assessment
+      assert.strictEqual(out, w)
+    end)
+
+    test("when value1 is not similar to value2, wrapper must be returned", proc()
+      # (1) act
+      const (
+        value1 = "hello"
+        value2 = 123
+        w = expected(value1)
+        out = peval(w.similarTo(value2))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be similar")
+    end)
+
+    test("when arrays have different length, error must be raised", proc()
+      # (1) act
+      const (
+        arr1 = []
+        arr2 = [1]
+        out = peval(expected(arr1).similarTo(arr2))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should have the same length")
+    end)
+
+    test("when two arrays are similar, wrapper must be returned", proc()
+      # (1) act
+      const (
+        arr1 = [1, 2, 3]
+        arr2 = [2, 1, 3]
+        w = expected(arr1)
+        out = w.similarTo(arr2)
+      )
+
+      # (2) assessment
+      assert.strictEqual(out, w)
+    end)
+
+    test("when an item of array 1 not in array 2, error must be raised", proc()
+      # (1) act
+      const (
+        arr1 = [1, 2, 3]
+        arr2 = [2, 1, 4]
+        w = expected(arr1)
+        out = peval(w.similarTo(arr2))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be in")
+    end)
+
+    test("when second appearance of item not in second array, error must be raised", proc()
+      # (1) act
+      const (
+        arr1 = [1, 2, 1, 3]
+        arr2 = [1, 2, 3, 4]
+        w = expected(arr1)
+        out = peval(w.similarTo(arr2))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be in")
+    end)
+  end)
+
+  suite("notSimilarTo()", proc()
+    test("when not similar, wrapper must be raised", proc()
+      # (1) act
+      const (
+        arr1 = []
+        arr2 = [1]
+        w = expected(arr1)
+        out = w.notSimilarTo(arr2)
+      )
+
+      # (2) assessment
+      assert.strictEqual(out, w)
+    end)
+
+    test("when similar, error must be raised", proc()
+      # (1) act
+      const (
+        arr1 = [1, 2, 3]
+        arr2 = [2, 1, 3]
+        w = expected(arr1)
+        out = peval(w.notSimilarTo(arr2))
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be similar")
+    end)
+  end)
+end)
