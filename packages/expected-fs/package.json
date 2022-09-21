@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected-fs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Plugin for asserting files and directories.",
   "homepage": "https://akromio.com",
   "author": {
