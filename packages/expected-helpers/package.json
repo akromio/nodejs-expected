@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected-helpers",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Helpers for the assert libs.",
   "homepage": "https://akromio.com",
   "author": {
@@ -8,12 +8,6 @@
     "email": "hello@siacodelabs.com",
     "url": "http://siacodelabs.com"
   },
-  "contributors": [
-    {
-      "name": "Raúl G. González",
-      "email": "raulggonzalez@siacodelabs.com"
-    }
-  ],
   "publishConfig": {
     "access": "public"
   },

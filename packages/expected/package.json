@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Assertion test library.",
   "homepage": "https://akromio.com",
   "author": {
@@ -8,12 +8,6 @@
     "email": "hello@siacodelabs.com",
     "url": "http://siacodelabs.com"
   },
-  "contributors": [
-    {
-      "name": "Raúl G. González",
-      "email": "raulggonzalez@siacodelabs.com"
-    }
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -42,7 +36,7 @@
     "npm": ">= 6"
   },
   "dependencies": {
-    "@akromio/expected-helpers": "^0.4.0",
+    "@akromio/expected-helpers": "^0.4.1",
     "@dogmalang/core": "^1.0.0-rc18.0",
     "chalk": "^4.1.2",
     "lodash.get": "^4.4.2",
