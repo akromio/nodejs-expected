@@ -41,7 +41,7 @@
     "npm": ">= 6"
   },
   "dependencies": {
-    "@akromio/expected-helpers": "^0.2.0",
+    "@akromio/expected-helpers": "^0.4.0",
     "@dogmalang/core": "^1.0.0-rc18.0",
     "@dogmalang/fs.sync": "^0.2.0"
   },
