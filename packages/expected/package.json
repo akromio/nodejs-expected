@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Assertion test library.",
   "homepage": "https://akromio.com",
   "author": {
@@ -36,7 +36,7 @@
     "npm": ">= 6"
   },
   "dependencies": {
-    "@akromio/expected-helpers": "^0.4.1",
+    "@akromio/expected-helpers": "^0.4.2",
     "@dogmalang/core": "^1.0.0-rc18.0",
     "chalk": "^4.1.2",
     "lodash.get": "^4.4.2",
