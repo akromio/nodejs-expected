@@ -8,8 +8,10 @@ const AssertionError = _core.dogma.use(require("./AssertionError"));
 
 const $FileWrapper = class FileWrapper {
   constructor(_) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (_ == null) _ = {};
+    /* c8 ignore stop */
+
     (0, _core.expect)('filePath', _['filePath'], _core.text);
     Object.defineProperty(this, 'filePath', {
       value: (0, _core.coalesce)(_['filePath'], null),

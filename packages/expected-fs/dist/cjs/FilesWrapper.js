@@ -12,8 +12,10 @@ const AssertionError = _core.dogma.use(require("./AssertionError"));
 
 const $FilesWrapper = class FilesWrapper {
   constructor(_) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (_ == null) _ = {};
+    /* c8 ignore stop */
+
     (0, _core.expect)('filePaths', _['filePaths'], _core.dogma.TypeDef({
       name: 'inline',
       types: [_core.text],
