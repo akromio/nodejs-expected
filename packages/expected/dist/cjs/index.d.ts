@@ -12,7 +12,12 @@ declare global {
   function expected(value?: any): ValueWrapper
 
   namespace expected {
-    function plugin(name: string): (value?: any) => ValueWrapper
+    /**
+     * Loads a given plugin.
+     *
+     * @param pi - Plugin declaration to load.
+     */
+    function plugin(pi: any): ValueWrapper
   }
 }
 

@@ -10,8 +10,10 @@ const AssertionError = _core.dogma.use(require("./AssertionError"));
 
 const $DirWrapper = class DirWrapper {
   constructor(_) {
-    /* c8 ignore next */
+    /* c8 ignore start */
     if (_ == null) _ = {};
+    /* c8 ignore stop */
+
     (0, _core.expect)('dirPath', _['dirPath'], _core.text);
     Object.defineProperty(this, 'dirPath', {
       value: (0, _core.coalesce)(_['dirPath'], null),
