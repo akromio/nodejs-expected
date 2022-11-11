@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+msg=$(cat $1)
+
+if [[ ! "$msg" =~ ^[a-zA-Z0-9\(\)]+:.+ ]]; then
+  echo "Commit messages must have the following format: 'type: title'."
+  exit 1
+fi
