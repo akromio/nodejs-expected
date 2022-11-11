@@ -1,13 +1,10 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../../.."));
-
 suite(__filename, () => {
   {
     test("when item found, value wrapper with original value must be returned", () => {

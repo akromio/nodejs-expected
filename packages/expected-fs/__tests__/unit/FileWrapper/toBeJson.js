@@ -1,9 +1,7 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const expected = _core.dogma.use(require("@akromio/expected"));
-
 suite(__filename, () => {
   {
     test("when file is JSON, wrapper must be returned", () => {

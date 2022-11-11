@@ -1,17 +1,13 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../../../.."));
-
 suite(__filename, () => {
   {
     suite("toBeText()", () => {
@@ -28,7 +24,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected(1234).toBeText();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
             assert.include(_core.dogma.getItem(out, 1).message, "should be text/string");
@@ -43,7 +38,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected("ciao mondo!").notToBeText();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
             assert.include(_core.dogma.getItem(out, 1).message, "should not be text/string");

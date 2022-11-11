@@ -1,15 +1,11 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const path = _core.dogma.use(require("path"));
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../.."));
-
 module.exports = exports = suite(__filename, () => {
   {
     test("when imported, api must be exported", () => {

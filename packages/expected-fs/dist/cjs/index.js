@@ -1,17 +1,11 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const pkg = _core.dogma.use(require("../../package"));
-
 const path = _core.dogma.use(require("path"));
-
 const DirWrapper = _core.dogma.use(require("./DirWrapper"));
-
 const FileWrapper = _core.dogma.use(require("./FileWrapper"));
-
 const FilesWrapper = _core.dogma.use(require("./FilesWrapper"));
-
 module.exports = exports = {
   ["name"]: pkg.name,
   ["members"]: {

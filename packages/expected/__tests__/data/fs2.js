@@ -1,7 +1,6 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 module.exports = exports = {
   ["name"]: "fs2",
   ["members"]: {

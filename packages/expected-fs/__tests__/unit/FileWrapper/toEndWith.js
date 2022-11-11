@@ -1,15 +1,11 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const path = _core.dogma.use(require("path"));
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const expected = _core.dogma.use(require("@akromio/expected"));
-
 const filePath = path.join(__dirname, "../../data/toEndWith.txt");
 suite(__filename, () => {
   {
@@ -27,7 +23,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(filePath).toEndWith("xyz");
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should end with");
           }
         });
@@ -47,7 +42,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(filePath).notToEndWith("acordarme");
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not end with");
           }
         });
