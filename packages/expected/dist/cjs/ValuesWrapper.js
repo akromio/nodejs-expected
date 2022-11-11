@@ -1,28 +1,19 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const assert = _core.dogma.use(require("assert"));
-
 const get = _core.dogma.use(require("lodash.get"));
-
 const uuid = _core.dogma.use(require("uuid"));
-
 const Ajv = _core.dogma.use(require("ajv"));
-
 const {
   format,
   color
 } = _core.dogma.use(require("@akromio/expected-helpers"));
-
 const AssertionError = _core.dogma.use(require("./AssertionError"));
-
 const $ValuesWrapper = class ValuesWrapper {
   constructor(_) {
-    /* c8 ignore start */
-    if (_ == null) _ = {};
+    /* c8 ignore start */if (_ == null) _ = {};
     /* c8 ignore stop */
-
     (0, _core.expect)('values', _['values'], _core.list);
     Object.defineProperty(this, 'values', {
       value: (0, _core.coalesce)(_['values'], null),
@@ -36,41 +27,28 @@ const $ValuesWrapper = class ValuesWrapper {
       enumerable: false
     });
     /* c8 ignore start */
-
-    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___init__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___init__(_);
-    /* c8 ignore stop */
-
+    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___init__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___init__(_); /* c8 ignore stop */
     /* c8 ignore start */
-
-    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___post__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___post__();
-    /* c8 ignore stop */
-
+    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___post__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___post__(); /* c8 ignore stop */
     /* c8 ignore start */
-
-    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___validate__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___validate__();
-    /* c8 ignore stop */
+    if (this._pvt_d21832db0b8e360611e08d1f3f580d4d___validate__ instanceof Function) this._pvt_d21832db0b8e360611e08d1f3f580d4d___validate__(); /* c8 ignore stop */
   }
-
 };
+
 const ValuesWrapper = new Proxy($ValuesWrapper, {
   apply(receiver, self, args) {
     return new $ValuesWrapper(...args);
   }
-
 });
 module.exports = exports = ValuesWrapper;
 const Self = ValuesWrapper;
-
 ValuesWrapper.prototype.toBeInstanceOf = ValuesWrapper.prototype.toBe = function (Type) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("Type", Type);
-
   {
     for (const value of values) {
       if (_core.dogma.isNot(value, Type)) {
@@ -80,17 +58,13 @@ ValuesWrapper.prototype.toBeInstanceOf = ValuesWrapper.prototype.toBe = function
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeInstanceOf = ValuesWrapper.prototype.notToBe = function (Type) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("Type", Type);
-
   {
     for (const value of values) {
       if (_core.dogma.is(value, Type)) {
@@ -100,7 +74,6 @@ ValuesWrapper.prototype.notToBeInstanceOf = ValuesWrapper.prototype.notToBe = fu
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeNull = ValuesWrapper.prototype.toBeNil = function () {
   const self = this;
   const {
@@ -116,7 +89,6 @@ ValuesWrapper.prototype.toBeNull = ValuesWrapper.prototype.toBeNil = function ()
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeNull = ValuesWrapper.prototype.notToBeNil = function () {
   const self = this;
   const {
@@ -132,7 +104,6 @@ ValuesWrapper.prototype.notToBeNull = ValuesWrapper.prototype.notToBeNil = funct
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeBoolean = ValuesWrapper.prototype.toBeBool = function () {
   const self = this;
   const {
@@ -148,7 +119,6 @@ ValuesWrapper.prototype.toBeBoolean = ValuesWrapper.prototype.toBeBool = functio
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeBoolean = ValuesWrapper.prototype.notToBeBool = function () {
   const self = this;
   const {
@@ -164,7 +134,6 @@ ValuesWrapper.prototype.notToBeBoolean = ValuesWrapper.prototype.notToBeBool = f
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeDate = ValuesWrapper.prototype.toBeTimestamp = function () {
   const self = this;
   const {
@@ -180,7 +149,6 @@ ValuesWrapper.prototype.toBeDate = ValuesWrapper.prototype.toBeTimestamp = funct
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeDate = ValuesWrapper.prototype.notToBeTimestamp = function () {
   const self = this;
   const {
@@ -196,7 +164,6 @@ ValuesWrapper.prototype.notToBeDate = ValuesWrapper.prototype.notToBeTimestamp =
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeString = ValuesWrapper.prototype.toBeText = function () {
   const self = this;
   const {
@@ -212,7 +179,6 @@ ValuesWrapper.prototype.toBeString = ValuesWrapper.prototype.toBeText = function
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeString = ValuesWrapper.prototype.notToBeText = function () {
   const self = this;
   const {
@@ -228,7 +194,6 @@ ValuesWrapper.prototype.notToBeString = ValuesWrapper.prototype.notToBeText = fu
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeNumber = ValuesWrapper.prototype.toBeNum = function () {
   const self = this;
   const {
@@ -244,7 +209,6 @@ ValuesWrapper.prototype.toBeNumber = ValuesWrapper.prototype.toBeNum = function 
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeNumber = ValuesWrapper.prototype.notToBeNum = function () {
   const self = this;
   const {
@@ -260,7 +224,6 @@ ValuesWrapper.prototype.notToBeNumber = ValuesWrapper.prototype.notToBeNum = fun
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeArray = ValuesWrapper.prototype.toBeList = function () {
   const self = this;
   const {
@@ -276,7 +239,6 @@ ValuesWrapper.prototype.toBeArray = ValuesWrapper.prototype.toBeList = function 
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeArray = ValuesWrapper.prototype.notToBeList = function () {
   const self = this;
   const {
@@ -292,7 +254,6 @@ ValuesWrapper.prototype.notToBeArray = ValuesWrapper.prototype.notToBeList = fun
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeSet = function () {
   const self = this;
   const {
@@ -308,7 +269,6 @@ ValuesWrapper.prototype.toBeSet = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeSet = function () {
   const self = this;
   const {
@@ -324,7 +284,6 @@ ValuesWrapper.prototype.notToBeSet = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeObject = ValuesWrapper.prototype.toBeMap = function () {
   const self = this;
   const {
@@ -340,7 +299,6 @@ ValuesWrapper.prototype.toBeObject = ValuesWrapper.prototype.toBeMap = function 
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeObject = ValuesWrapper.prototype.notToBeMap = function () {
   const self = this;
   const {
@@ -356,7 +314,6 @@ ValuesWrapper.prototype.notToBeObject = ValuesWrapper.prototype.notToBeMap = fun
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeFunction = ValuesWrapper.prototype.toBeFn = function () {
   const self = this;
   const {
@@ -372,7 +329,6 @@ ValuesWrapper.prototype.toBeFunction = ValuesWrapper.prototype.toBeFn = function
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeFunction = ValuesWrapper.prototype.notToBeFn = function () {
   const self = this;
   const {
@@ -388,7 +344,6 @@ ValuesWrapper.prototype.notToBeFunction = ValuesWrapper.prototype.notToBeFn = fu
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeCallable = function () {
   const self = this;
   const {
@@ -404,7 +359,6 @@ ValuesWrapper.prototype.toBeCallable = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeCallable = function () {
   const self = this;
   const {
@@ -420,17 +374,13 @@ ValuesWrapper.prototype.notToBeCallable = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.lessThan = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     for (const value of values) {
       if ((0, _core.typename)(value) != (0, _core.typename)(another) || value >= another) {
@@ -440,17 +390,13 @@ ValuesWrapper.prototype.lessThan = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.lessThanOrEqualTo = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     for (const value of values) {
       if ((0, _core.typename)(value) != (0, _core.typename)(another) || value > another) {
@@ -460,17 +406,13 @@ ValuesWrapper.prototype.lessThanOrEqualTo = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.greaterThan = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     for (const value of values) {
       if ((0, _core.typename)(value) != (0, _core.typename)(another) || _core.dogma.includes(["bool"], (0, _core.typename)(value)) || value <= another) {
@@ -480,17 +422,13 @@ ValuesWrapper.prototype.greaterThan = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.greaterThanOrEqualTo = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     for (const value of values) {
       if ((0, _core.typename)(value) != (0, _core.typename)(another) || _core.dogma.includes(["bool"], (0, _core.typename)(value)) || value < another) {
@@ -500,7 +438,6 @@ ValuesWrapper.prototype.greaterThanOrEqualTo = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.between = function (val1, val2) {
   const self = this;
   const {
@@ -516,7 +453,6 @@ ValuesWrapper.prototype.between = function (val1, val2) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notBetween = function (val1, val2) {
   const self = this;
   const {
@@ -532,17 +468,13 @@ ValuesWrapper.prototype.notBetween = function (val1, val2) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.into = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another, _core.list);
-
   {
     for (const value of values) {
       if (!another.includes(value)) {
@@ -552,17 +484,13 @@ ValuesWrapper.prototype.into = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notInto = function (another) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another, _core.list);
-
   {
     for (const value of values) {
       if (another.includes(value)) {
@@ -572,23 +500,18 @@ ValuesWrapper.prototype.notInto = function (another) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.toHave = function (members) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("members", members, [_core.text, _core.list, _core.map]);
-
   {
     for (const value of values) {
       if (_core.dogma.isNot(members, [_core.list, _core.map])) {
         members = [members];
       }
-
       if (_core.dogma.is(members, _core.list)) {
         for (const mem of members) {
           if (_core.dogma.getItem(value, mem) == null) {
@@ -602,7 +525,6 @@ ValuesWrapper.prototype.toHave = function (members) {
               const [ok, received] = _core.dogma.peval(() => {
                 return assert.deepEqual(_core.dogma.getItem(value, mem), val);
               });
-
               if (!ok) {
                 _core.dogma.raise(AssertionError(`${format(value)} should have ${color(mem)} to ${format(val)}.`));
               }
@@ -614,23 +536,18 @@ ValuesWrapper.prototype.toHave = function (members) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToHave = function (members) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("members", members, [_core.text, _core.list, _core.map]);
-
   {
     for (const value of values) {
       if (_core.dogma.isNot(members, [_core.list, _core.map])) {
         members = [members];
       }
-
       if (_core.dogma.is(members, _core.list)) {
         for (const mem of members) {
           if (_core.dogma.getItem(value, mem) !== undefined) {
@@ -642,7 +559,6 @@ ValuesWrapper.prototype.notToHave = function (members) {
           {
             {
               const received = _core.dogma.getItem(value, mem);
-
               if (received == val) {
                 _core.dogma.raise(AssertionError(`${format(value)} should not have ${color(mem)} to ${format(val)}.`));
               }
@@ -654,7 +570,6 @@ ValuesWrapper.prototype.notToHave = function (members) {
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeEmpty = function () {
   const self = this;
   const {
@@ -670,7 +585,6 @@ ValuesWrapper.prototype.toBeEmpty = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToBeEmpty = function () {
   const self = this;
   const {
@@ -686,17 +600,13 @@ ValuesWrapper.prototype.notToBeEmpty = function () {
   }
   return this;
 };
-
 ValuesWrapper.prototype.toMatch = ValuesWrapper.prototype.like = function (pattern) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("pattern", pattern, _core.text);
-
   {
     for (const value of values) {
       if (!(0, _core.re)(pattern).test(value)) {
@@ -706,17 +616,13 @@ ValuesWrapper.prototype.toMatch = ValuesWrapper.prototype.like = function (patte
   }
   return this;
 };
-
 ValuesWrapper.prototype.notToMatch = ValuesWrapper.prototype.notLike = function (pattern) {
   const self = this;
   const {
     values,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("pattern", pattern, _core.text);
-
   {
     for (const value of values) {
       if ((0, _core.re)(pattern).test(value)) {
@@ -726,7 +632,6 @@ ValuesWrapper.prototype.notToMatch = ValuesWrapper.prototype.notLike = function 
   }
   return this;
 };
-
 ValuesWrapper.prototype.toBeUuid = function () {
   const self = this;
   const {

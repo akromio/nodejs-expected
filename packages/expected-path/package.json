@@ -30,10 +30,6 @@
   "files": [
     "dist/"
   ],
-  "engines": {
-    "node": ">= 14",
-    "npm": ">= 6"
-  },
   "dependencies": {
     "@akromio/expected-helpers": "^0.4.3",
     "@dogmalang/core": "^1.0.0-rc18.0"

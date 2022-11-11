@@ -1,17 +1,13 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../../../.."));
-
 suite(__filename, () => {
   {
     suite("toBeNum()", () => {
@@ -35,11 +31,9 @@ suite(__filename, () => {
               ["y"]: "22",
               ["z"]: "33"
             };
-
             const out = _core.dogma.peval(() => {
               return expected(value).members("x", "y").toBeNum();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), Error);
             assert.include(_core.dogma.getItem(out, 1).message, "should be a number");
@@ -68,11 +62,9 @@ suite(__filename, () => {
               ["y"]: "22",
               ["z"]: "33"
             };
-
             const out = _core.dogma.peval(() => {
               return expected(value).members("x", "y").notToBeNum();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), Error);
             assert.include(_core.dogma.getItem(out, 1).message, "should not be a number");

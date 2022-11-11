@@ -8,12 +8,6 @@
     "email": "hello@siacodelabs.com",
     "url": "http://siacodelabs.com"
   },
-  "contributors": [
-    {
-      "name": "Raúl G. González",
-      "email": "raulggonzalez@siacodelabs.com"
-    }
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -37,10 +31,6 @@
   "files": [
     "dist/"
   ],
-  "engines": {
-    "node": ">= 14",
-    "npm": ">= 6"
-  },
   "dependencies": {
     "@dogmalang/core": "^1.0.0-rc18.0"
   },

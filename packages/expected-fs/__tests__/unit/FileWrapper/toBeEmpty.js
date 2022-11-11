@@ -1,13 +1,10 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const expected = _core.dogma.use(require("@akromio/expected"));
-
 suite(__filename, () => {
   {
     suite("toBeEmpty()", () => {
@@ -24,7 +21,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(__filename).toBeEmpty();
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should be empty");
           }
         });
@@ -44,7 +40,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(__dirname, "../../data/empty.txt").notToBeEmpty();
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not be empty");
           }
         });

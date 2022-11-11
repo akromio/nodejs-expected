@@ -1,17 +1,13 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const expected = _core.dogma.use(require("../../../.."));
-
 suite(__filename, () => {
   {
     suite("toRaise()", () => {
@@ -30,7 +26,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected(_core.dogma.nop()).toRaise();
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "error should be raised.");
@@ -52,7 +47,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected("bonjour").toRaise(SyntaxError);
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "SyntaxError");
@@ -75,7 +69,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected("bonjour").toRaise(Error("xyz"));
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "should be raised");
@@ -88,7 +81,6 @@ suite(__filename, () => {
                     const out = _core.dogma.peval(() => {
                       return expected("bonjour").toRaise("xyz");
                     });
-
                     assert.equal(_core.dogma.getItem(out, 0), false);
                     assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                     assert.include(_core.dogma.getItem(out, 1).message, "value is not a function");
@@ -123,7 +115,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected("ciao!").notToRaise();
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "error should not be raised");
@@ -145,7 +136,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected("bonjour").notToRaise(TypeError);
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "TypeError");
@@ -168,7 +158,6 @@ suite(__filename, () => {
                 const out = _core.dogma.peval(() => {
                   return expected("bonjour").notToRaise(TypeError("value is not a function"));
                 });
-
                 assert.equal(_core.dogma.getItem(out, 0), false);
                 assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
                 assert.include(_core.dogma.getItem(out, 1).message, "TypeError");

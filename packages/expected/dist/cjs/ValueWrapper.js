@@ -1,36 +1,23 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const assert = _core.dogma.use(require("assert"));
-
 const chalk = _core.dogma.use(require("chalk"));
-
 const get = _core.dogma.use(require("lodash.get"));
-
 const uuid = _core.dogma.use(require("uuid"));
-
 const stream = _core.dogma.use(require("stream"));
-
 const Ajv = _core.dogma.use(require("ajv"));
-
 const {
   format,
   color
 } = _core.dogma.use(require("@akromio/expected-helpers"));
-
 const similarTo = _core.dogma.use(require("./utils/similarTo"));
-
 const AssertionError = _core.dogma.use(require("./AssertionError"));
-
 const ValuesWrapper = _core.dogma.use(require("./ValuesWrapper"));
-
 const $ValueWrapper = class ValueWrapper {
   constructor(_) {
-    /* c8 ignore start */
-    if (_ == null) _ = {};
+    /* c8 ignore start */if (_ == null) _ = {};
     /* c8 ignore stop */
-
     Object.defineProperty(this, 'value', {
       value: (0, _core.coalesce)(_['value'], null),
       writable: false,
@@ -42,56 +29,39 @@ const $ValueWrapper = class ValueWrapper {
       enumerable: false
     });
     /* c8 ignore start */
-
-    if (_['fulfilled'] != null) (0, _core.expect)('fulfilled', _['fulfilled'], _core.bool);
-    /* c8 ignore stop */
-
+    if (_['fulfilled'] != null) (0, _core.expect)('fulfilled', _['fulfilled'], _core.bool); /* c8 ignore stop */
     Object.defineProperty(this, 'fulfilled', {
       value: (0, _core.coalesce)(_['fulfilled'], null),
       writable: false,
       enumerable: false
     });
     /* c8 ignore start */
-
-    if (this._pvt_62bf16e296951a4d67bb347ede049a31___init__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___init__(_);
-    /* c8 ignore stop */
-
+    if (this._pvt_62bf16e296951a4d67bb347ede049a31___init__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___init__(_); /* c8 ignore stop */
     /* c8 ignore start */
-
-    if (this._pvt_62bf16e296951a4d67bb347ede049a31___post__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___post__();
-    /* c8 ignore stop */
-
+    if (this._pvt_62bf16e296951a4d67bb347ede049a31___post__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___post__(); /* c8 ignore stop */
     /* c8 ignore start */
-
-    if (this._pvt_62bf16e296951a4d67bb347ede049a31___validate__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___validate__();
-    /* c8 ignore stop */
+    if (this._pvt_62bf16e296951a4d67bb347ede049a31___validate__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___validate__(); /* c8 ignore stop */
   }
-
 };
+
 const ValueWrapper = new Proxy($ValueWrapper, {
   apply(receiver, self, args) {
     return new $ValueWrapper(...args);
   }
-
 });
 module.exports = exports = ValueWrapper;
 const Self = ValueWrapper;
-
 ValueWrapper.prototype.it = ValueWrapper.prototype.item = function (i) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("i", i, _core.num);
-
   {
     return this.get(`[${i}]`);
   }
 };
-
 ValueWrapper.prototype.items = function (...indexes) {
   const self = this;
   const {
@@ -101,39 +71,31 @@ ValueWrapper.prototype.items = function (...indexes) {
   {
     const root = originalValue !== null && originalValue !== void 0 ? originalValue : value;
     let values;
-
     if ((0, _core.len)(indexes) == 0) {
       values = root;
     } else {
       values = [];
-
       for (const i of indexes) {
         values.push(_core.dogma.getItem(root, i));
       }
     }
-
     return ValuesWrapper({
       'originalValue': root,
       'values': values
     });
   }
 };
-
 ValueWrapper.prototype.member = function (name) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("name", name, _core.text);
-
   {
     return this.get(name);
   }
 };
-
 ValueWrapper.prototype.members = function (...names) {
   const self = this;
   const {
@@ -143,21 +105,16 @@ ValueWrapper.prototype.members = function (...names) {
   {
     const root = originalValue !== null && originalValue !== void 0 ? originalValue : value;
     const values = [];
-
     for (const exp of names) {
-      /*c8 ignore next*/
-      _core.dogma.expect('exp', exp, _core.text);
-
+      /*c8 ignore next*/_core.dogma.expect('exp', exp, _core.text);
       values.push(get(root, exp));
     }
-
     return ValuesWrapper({
       'originalValue': root,
       'values': values
     });
   }
 };
-
 ValueWrapper.prototype.len = function () {
   const self = this;
   const {
@@ -171,17 +128,13 @@ ValueWrapper.prototype.len = function () {
     });
   }
 };
-
 ValueWrapper.prototype.get = function (exp) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("exp", exp, [_core.text, _core.num]);
-
   {
     const root = originalValue !== null && originalValue !== void 0 ? originalValue : value;
     return Self({
@@ -190,7 +143,6 @@ ValueWrapper.prototype.get = function (exp) {
     });
   }
 };
-
 ValueWrapper.prototype.toRaise = ValueWrapper.prototype.toThrow = function (errExpected) {
   const self = this;
   const {
@@ -202,14 +154,12 @@ ValueWrapper.prototype.toRaise = ValueWrapper.prototype.toThrow = function (errE
       const [ok, res] = _core.dogma.peval(() => {
         return value();
       });
-
       if (ok) {
         _core.dogma.raise(AssertionError("error should be raised."));
       } else {
         if (errExpected) {
           {
             const Type = errExpected;
-
             if (_core.dogma.is(Type, _core.func)) {
               if (_core.dogma.isNot(res, Type)) {
                 _core.dogma.raise(AssertionError(`error of type ${color(Type.name)} should be raised.`));
@@ -232,7 +182,6 @@ ValueWrapper.prototype.toRaise = ValueWrapper.prototype.toThrow = function (errE
   }
   return this;
 };
-
 ValueWrapper.prototype.notToRaise = ValueWrapper.prototype.notToThrow = function (err) {
   const self = this;
   const {
@@ -244,14 +193,12 @@ ValueWrapper.prototype.notToRaise = ValueWrapper.prototype.notToThrow = function
       const [ok, res] = _core.dogma.peval(() => {
         return value();
       });
-
       if (!ok) {
         if (!err) {
           _core.dogma.raise(AssertionError("error should not be raised."));
         } else {
           {
             const Type = err;
-
             if (_core.dogma.is(Type, _core.func)) {
               if (_core.dogma.is(res, Type)) {
                 _core.dogma.raise(AssertionError(`error of type ${color(Type.name)} should not be raised.`));
@@ -270,17 +217,13 @@ ValueWrapper.prototype.notToRaise = ValueWrapper.prototype.notToThrow = function
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeInstanceOf = ValueWrapper.prototype.toBe = function (Type) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("Type", Type);
-
   {
     if (_core.dogma.isNot(value, Type)) {
       _core.dogma.raise(AssertionError(`${format(value)} should be instance of ${color(Type.name)}.`));
@@ -288,17 +231,13 @@ ValueWrapper.prototype.toBeInstanceOf = ValueWrapper.prototype.toBe = function (
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeInstanceOf = ValueWrapper.prototype.notToBe = function (Type) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("Type", Type);
-
   {
     if (_core.dogma.is(value, Type)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not be instance of ${color(Type.name)}.`));
@@ -306,7 +245,6 @@ ValueWrapper.prototype.notToBeInstanceOf = ValueWrapper.prototype.notToBe = func
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeDuplexStream = function () {
   const self = this;
   const {
@@ -320,7 +258,6 @@ ValueWrapper.prototype.toBeDuplexStream = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeDuplexStream = function () {
   const self = this;
   const {
@@ -334,7 +271,6 @@ ValueWrapper.prototype.notToBeDuplexStream = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeReadableStream = function () {
   const self = this;
   const {
@@ -348,7 +284,6 @@ ValueWrapper.prototype.toBeReadableStream = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeReadableStream = function () {
   const self = this;
   const {
@@ -362,7 +297,6 @@ ValueWrapper.prototype.notToBeReadableStream = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeNull = ValueWrapper.prototype.toBeNil = function () {
   const self = this;
   const {
@@ -376,7 +310,6 @@ ValueWrapper.prototype.toBeNull = ValueWrapper.prototype.toBeNil = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeNull = ValueWrapper.prototype.notToBeNil = function () {
   const self = this;
   const {
@@ -390,7 +323,6 @@ ValueWrapper.prototype.notToBeNull = ValueWrapper.prototype.notToBeNil = functio
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeBoolean = ValueWrapper.prototype.toBeBool = function () {
   const self = this;
   const {
@@ -404,7 +336,6 @@ ValueWrapper.prototype.toBeBoolean = ValueWrapper.prototype.toBeBool = function 
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeBoolean = ValueWrapper.prototype.notToBeBool = function () {
   const self = this;
   const {
@@ -418,7 +349,6 @@ ValueWrapper.prototype.notToBeBoolean = ValueWrapper.prototype.notToBeBool = fun
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeDate = ValueWrapper.prototype.toBeTimestamp = function () {
   const self = this;
   const {
@@ -432,7 +362,6 @@ ValueWrapper.prototype.toBeDate = ValueWrapper.prototype.toBeTimestamp = functio
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeDate = ValueWrapper.prototype.notToBeTimestamp = function () {
   const self = this;
   const {
@@ -446,7 +375,6 @@ ValueWrapper.prototype.notToBeDate = ValueWrapper.prototype.notToBeTimestamp = f
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeString = ValueWrapper.prototype.toBeText = function () {
   const self = this;
   const {
@@ -460,7 +388,6 @@ ValueWrapper.prototype.toBeString = ValueWrapper.prototype.toBeText = function (
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeString = ValueWrapper.prototype.notToBeText = function () {
   const self = this;
   const {
@@ -474,7 +401,6 @@ ValueWrapper.prototype.notToBeString = ValueWrapper.prototype.notToBeText = func
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeNumber = ValueWrapper.prototype.toBeNum = function () {
   const self = this;
   const {
@@ -488,7 +414,6 @@ ValueWrapper.prototype.toBeNumber = ValueWrapper.prototype.toBeNum = function ()
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeNumber = ValueWrapper.prototype.notToBeNum = function () {
   const self = this;
   const {
@@ -502,7 +427,6 @@ ValueWrapper.prototype.notToBeNumber = ValueWrapper.prototype.notToBeNum = funct
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeArray = ValueWrapper.prototype.toBeList = function () {
   const self = this;
   const {
@@ -516,7 +440,6 @@ ValueWrapper.prototype.toBeArray = ValueWrapper.prototype.toBeList = function ()
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeArray = ValueWrapper.prototype.notToBeList = function () {
   const self = this;
   const {
@@ -530,7 +453,6 @@ ValueWrapper.prototype.notToBeArray = ValueWrapper.prototype.notToBeList = funct
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeSet = function () {
   const self = this;
   const {
@@ -544,7 +466,6 @@ ValueWrapper.prototype.toBeSet = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeSet = function () {
   const self = this;
   const {
@@ -558,7 +479,6 @@ ValueWrapper.prototype.notToBeSet = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeObject = ValueWrapper.prototype.toBeMap = function () {
   const self = this;
   const {
@@ -572,7 +492,6 @@ ValueWrapper.prototype.toBeObject = ValueWrapper.prototype.toBeMap = function ()
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeObject = ValueWrapper.prototype.notToBeMap = function () {
   const self = this;
   const {
@@ -586,7 +505,6 @@ ValueWrapper.prototype.notToBeObject = ValueWrapper.prototype.notToBeMap = funct
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeFunction = ValueWrapper.prototype.toBeFn = function () {
   const self = this;
   const {
@@ -600,7 +518,6 @@ ValueWrapper.prototype.toBeFunction = ValueWrapper.prototype.toBeFn = function (
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeFunction = ValueWrapper.prototype.notToBeFn = function () {
   const self = this;
   const {
@@ -614,7 +531,6 @@ ValueWrapper.prototype.notToBeFunction = ValueWrapper.prototype.notToBeFn = func
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeCallable = function () {
   const self = this;
   const {
@@ -628,7 +544,6 @@ ValueWrapper.prototype.toBeCallable = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeCallable = function () {
   const self = this;
   const {
@@ -642,7 +557,6 @@ ValueWrapper.prototype.notToBeCallable = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.equalTo = ValueWrapper.prototype.equals = function (another) {
   const self = this;
   const {
@@ -656,13 +570,11 @@ ValueWrapper.prototype.equalTo = ValueWrapper.prototype.equals = function (anoth
       const actual = format(value);
       const expected = format(another);
       const opts = `${actual} should be equal to ${expected}.`;
-
       _core.dogma.raise(AssertionError(opts));
     }
   }
   return this;
 };
-
 ValueWrapper.prototype.notEqualTo = ValueWrapper.prototype.notEquals = function (another) {
   const self = this;
   const {
@@ -675,13 +587,11 @@ ValueWrapper.prototype.notEqualTo = ValueWrapper.prototype.notEquals = function 
     }), 0)) {
       const actual = format(value);
       const opts = `value should not be equal to: ${actual}.`;
-
       _core.dogma.raise(AssertionError(opts));
     }
   }
   return this;
 };
-
 ValueWrapper.prototype.sameAs = function (another) {
   const self = this;
   const {
@@ -695,7 +605,6 @@ ValueWrapper.prototype.sameAs = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notSameAs = function (another) {
   const self = this;
   const {
@@ -709,17 +618,13 @@ ValueWrapper.prototype.notSameAs = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.lessThan = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     if ((0, _core.typename)(value) != (0, _core.typename)(another) || value >= another) {
       _core.dogma.raise(AssertionError(`${format(value)} should be less than ${format(another)}.`));
@@ -727,17 +632,13 @@ ValueWrapper.prototype.lessThan = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.lessThanOrEqualTo = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     if ((0, _core.typename)(value) != (0, _core.typename)(another) || value > another) {
       _core.dogma.raise(AssertionError(`${format(value)} should be less than or equal to ${format(another)}.`));
@@ -745,17 +646,13 @@ ValueWrapper.prototype.lessThanOrEqualTo = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.greaterThan = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     if ((0, _core.typename)(value) != (0, _core.typename)(another) || _core.dogma.includes(["bool"], (0, _core.typename)(value)) || value <= another) {
       _core.dogma.raise(AssertionError(`${format(value)} should be greater than ${format(another)}.`));
@@ -763,17 +660,13 @@ ValueWrapper.prototype.greaterThan = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.greaterThanOrEqualTo = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another);
-
   {
     if ((0, _core.typename)(value) != (0, _core.typename)(another) || _core.dogma.includes(["bool"], (0, _core.typename)(value)) || value < another) {
       _core.dogma.raise(AssertionError(`${format(value)} should be greater than or equal to ${format(another)}.`));
@@ -781,7 +674,6 @@ ValueWrapper.prototype.greaterThanOrEqualTo = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.between = function (val1, val2) {
   const self = this;
   const {
@@ -795,7 +687,6 @@ ValueWrapper.prototype.between = function (val1, val2) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notBetween = function (val1, val2) {
   const self = this;
   const {
@@ -809,7 +700,6 @@ ValueWrapper.prototype.notBetween = function (val1, val2) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toContain = ValueWrapper.prototype.toInclude = function (item) {
   const self = this;
   const {
@@ -821,7 +711,6 @@ ValueWrapper.prototype.toContain = ValueWrapper.prototype.toInclude = function (
       const [ok, res] = _core.dogma.peval(() => {
         return value.includes(item);
       });
-
       if (!ok || !res) {
         _core.dogma.raise(AssertionError(`${format(value)} should include ${format(item)}.`));
       }
@@ -829,7 +718,6 @@ ValueWrapper.prototype.toContain = ValueWrapper.prototype.toInclude = function (
   }
   return this;
 };
-
 ValueWrapper.prototype.notToContain = ValueWrapper.prototype.notToInclude = function (item) {
   const self = this;
   const {
@@ -841,7 +729,6 @@ ValueWrapper.prototype.notToContain = ValueWrapper.prototype.notToInclude = func
       const [ok, res] = _core.dogma.peval(() => {
         return value.includes(item);
       });
-
       if (ok && res) {
         _core.dogma.raise(AssertionError(`${format(value)} should not include ${format(item)}.`));
       }
@@ -849,17 +736,13 @@ ValueWrapper.prototype.notToContain = ValueWrapper.prototype.notToInclude = func
   }
   return this;
 };
-
 ValueWrapper.prototype.into = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another, _core.list);
-
   {
     if (!another.includes(value)) {
       _core.dogma.raise(AssertionError(`${format(value)} should be in ${format(another)}.`));
@@ -867,17 +750,13 @@ ValueWrapper.prototype.into = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notInto = function (another) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("another", another, _core.list);
-
   {
     if (another.includes(value)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not be in ${format(another)}.`));
@@ -885,22 +764,17 @@ ValueWrapper.prototype.notInto = function (another) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toHave = function (members) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("members", members, [_core.text, _core.list, _core.map]);
-
   {
     if (_core.dogma.isNot(members, [_core.list, _core.map])) {
       members = [members];
     }
-
     if (_core.dogma.is(members, _core.list)) {
       for (const mem of members) {
         if (_core.dogma.getItem(value, mem) == null) {
@@ -914,7 +788,6 @@ ValueWrapper.prototype.toHave = function (members) {
             const [ok, received] = _core.dogma.peval(() => {
               return assert.deepEqual(_core.dogma.getItem(value, mem), val);
             });
-
             if (!ok) {
               _core.dogma.raise(AssertionError(`${format(value)} should have ${color(mem)} to ${format(val)}. Got: ${format(value[mem])}.`));
             }
@@ -925,22 +798,17 @@ ValueWrapper.prototype.toHave = function (members) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToHave = function (members) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("members", members, [_core.text, _core.list, _core.map]);
-
   {
     if (_core.dogma.isNot(members, [_core.list, _core.map])) {
       members = [members];
     }
-
     if (_core.dogma.is(members, _core.list)) {
       for (const mem of members) {
         if (_core.dogma.getItem(value, mem) !== undefined) {
@@ -952,7 +820,6 @@ ValueWrapper.prototype.notToHave = function (members) {
         {
           {
             const received = _core.dogma.getItem(value, mem);
-
             if (received == val) {
               _core.dogma.raise(AssertionError(`${format(value)} should not have ${color(mem)} to ${format(val)}.`));
             }
@@ -963,7 +830,6 @@ ValueWrapper.prototype.notToHave = function (members) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeEmpty = function () {
   const self = this;
   const {
@@ -977,7 +843,6 @@ ValueWrapper.prototype.toBeEmpty = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToBeEmpty = function () {
   const self = this;
   const {
@@ -991,21 +856,16 @@ ValueWrapper.prototype.notToBeEmpty = function () {
   }
   return this;
 };
-
 ValueWrapper.prototype.toHaveLen = ValueWrapper.prototype.toHaveLength = function (size) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("size", size, [_core.num, _core.list]);
-
   {
     {
       const received = (0, _core.len)(value);
-
       if (received != size) {
         _core.dogma.raise(AssertionError(`${format(value)} should have length to ${color(size)}. Got: ${color(received)}.`));
       }
@@ -1013,21 +873,16 @@ ValueWrapper.prototype.toHaveLen = ValueWrapper.prototype.toHaveLength = functio
   }
   return this;
 };
-
 ValueWrapper.prototype.notToHaveLen = ValueWrapper.prototype.notToHaveLength = function (size) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("size", size, _core.num);
-
   {
     {
       const received = (0, _core.len)(value);
-
       if (received == size) {
         _core.dogma.raise(AssertionError(`${format(value)} should not have length to ${color(size)}.`));
       }
@@ -1035,7 +890,6 @@ ValueWrapper.prototype.notToHaveLen = ValueWrapper.prototype.notToHaveLength = f
   }
   return this;
 };
-
 ValueWrapper.prototype.similarTo = function (other) {
   const self = this;
   const {
@@ -1045,7 +899,6 @@ ValueWrapper.prototype.similarTo = function (other) {
   {
     {
       let err = similarTo(value, other);
-
       if (err) {
         _core.dogma.raise(AssertionError(err.message));
       }
@@ -1053,7 +906,6 @@ ValueWrapper.prototype.similarTo = function (other) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notSimilarTo = function (other) {
   const self = this;
   const {
@@ -1063,7 +915,6 @@ ValueWrapper.prototype.notSimilarTo = function (other) {
   {
     {
       let err = similarTo(value, other);
-
       if (!err) {
         _core.dogma.raise(AssertionError(`${format(value)} should not be similar to ${format(other)}.`));
       }
@@ -1071,17 +922,13 @@ ValueWrapper.prototype.notSimilarTo = function (other) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toMatch = ValueWrapper.prototype.like = function (pattern) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("pattern", pattern, _core.text);
-
   {
     if (!(0, _core.re)(pattern).test(value)) {
       _core.dogma.raise(AssertionError(`${format(value)} should be like ${format(pattern)}.`));
@@ -1089,17 +936,13 @@ ValueWrapper.prototype.toMatch = ValueWrapper.prototype.like = function (pattern
   }
   return this;
 };
-
 ValueWrapper.prototype.notToMatch = ValueWrapper.prototype.notLike = function (pattern) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("pattern", pattern, _core.text);
-
   {
     if ((0, _core.re)(pattern).test(value)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not be like ${format(pattern)}.`));
@@ -1107,17 +950,13 @@ ValueWrapper.prototype.notToMatch = ValueWrapper.prototype.notLike = function (p
   }
   return this;
 };
-
 ValueWrapper.prototype.toStartWith = function (prefix) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("prefix", prefix, _core.text);
-
   {
     if (!(0, _core.text)(value).startsWith(prefix)) {
       _core.dogma.raise(AssertionError(`${format(value)} should start with ${format(prefix)}.`));
@@ -1125,17 +964,13 @@ ValueWrapper.prototype.toStartWith = function (prefix) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToStartWith = function (prefix) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("prefix", prefix, _core.text);
-
   {
     if ((0, _core.text)(value).startsWith(prefix)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not start with ${format(prefix)}.`));
@@ -1143,17 +978,13 @@ ValueWrapper.prototype.notToStartWith = function (prefix) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toEndWith = function (suffix) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("suffix", suffix, _core.text);
-
   {
     if (!(0, _core.text)(value).endsWith(suffix)) {
       _core.dogma.raise(AssertionError(`${format(value)} should end with ${format(suffix)}.`));
@@ -1161,17 +992,13 @@ ValueWrapper.prototype.toEndWith = function (suffix) {
   }
   return this;
 };
-
 ValueWrapper.prototype.notToEndWith = function (suffix) {
   const self = this;
   const {
     value,
     originalValue
-  } = self;
-  /* c8 ignore next */
-
+  } = self; /* c8 ignore next */
   _core.dogma.expect("suffix", suffix, _core.text);
-
   {
     if ((0, _core.text)(value).endsWith(suffix)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not end with ${format(suffix)}.`));
@@ -1179,7 +1006,6 @@ ValueWrapper.prototype.notToEndWith = function (suffix) {
   }
   return this;
 };
-
 ValueWrapper.prototype.toHaveBeenFulfilled = ValueWrapper.prototype.toBeFulfilled = function () {
   const self = this;
   const {
@@ -1193,7 +1019,6 @@ ValueWrapper.prototype.toHaveBeenFulfilled = ValueWrapper.prototype.toBeFulfille
   }
   return this;
 };
-
 ValueWrapper.prototype.toHaveBeenRejected = ValueWrapper.prototype.toBeRejected = function () {
   const self = this;
   const {
@@ -1207,7 +1032,6 @@ ValueWrapper.prototype.toHaveBeenRejected = ValueWrapper.prototype.toBeRejected 
   }
   return this;
 };
-
 ValueWrapper.prototype.toBeUuid = function () {
   const self = this;
   const {

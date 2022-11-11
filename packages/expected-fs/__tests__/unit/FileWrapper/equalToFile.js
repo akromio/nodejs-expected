@@ -1,15 +1,11 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const expected = _core.dogma.use(require("@akromio/expected"));
-
 const path = _core.dogma.use(require("path"));
-
 suite(__filename, () => {
   {
     suite("equalToFile()", () => {
@@ -26,7 +22,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(__filename).equalToFile(path.join(__dirname, "./equalTo.js"));
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should be same as file");
           }
         });
@@ -46,7 +41,6 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return expected.file(__filename).notEqualToFile(__filename);
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like("should not be same as file");
           }
         });

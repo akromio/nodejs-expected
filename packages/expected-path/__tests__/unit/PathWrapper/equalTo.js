@@ -1,13 +1,10 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const expected = _core.dogma.use(require("@akromio/expected"));
-
 suite(__filename, () => {
   {
     suite("equalTo()", () => {
@@ -25,11 +22,9 @@ suite(__filename, () => {
             const p1 = "/one/two/three";
             const p2 = "/three/two/one";
             const w = expected.path(p1);
-
             const out = _core.dogma.peval(() => {
               return w.equalTo(p2);
             });
-
             expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like(`path .*${p1}.* should be equal to .*${p2}.*\.`);
           }
         });

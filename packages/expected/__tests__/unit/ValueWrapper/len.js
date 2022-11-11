@@ -1,13 +1,10 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../../.."));
-
 module.exports = exports = suite(__filename, () => {
   {
     suite("len", () => {

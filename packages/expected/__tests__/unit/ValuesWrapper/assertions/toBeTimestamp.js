@@ -1,17 +1,13 @@
 "use strict";
 
 var _core = require("@dogmalang/core");
-
 const {
   AssertionError
 } = _core.dogma.use(require("assert"));
-
 const {
   assert
 } = _core.dogma.use(require("chai"));
-
 const expected = _core.dogma.use(require("../../../.."));
-
 suite(__filename, () => {
   {
     suite("toBeTimestamp()", () => {
@@ -35,7 +31,6 @@ suite(__filename, () => {
                 'y': 1
               }).members("x", "y").toBeTimestamp();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
             assert.include(_core.dogma.getItem(out, 1).message, "should be date.");
@@ -64,7 +59,6 @@ suite(__filename, () => {
                 'y': (0, _core.timestamp)()
               }).members("x", "y").notToBeTimestamp();
             });
-
             assert.equal(_core.dogma.getItem(out, 0), false);
             assert.instanceOf(_core.dogma.getItem(out, 1), AssertionError);
             assert.include(_core.dogma.getItem(out, 1).message, "should not be date.");
