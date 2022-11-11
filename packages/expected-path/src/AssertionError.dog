@@ -1,0 +1,11 @@
+use (
+  {AssertionError} = dep://assert
+)
+
+/**
+ * An assertion error.
+ */
+export proxy(
+  AssertionError
+  apply = fn(target, ths?, args) = native("new AssertionError({message: args[0]})") end
+)

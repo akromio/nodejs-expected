@@ -1,0 +1,61 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("equalTo()", proc()
+    test("when two Linux paths being equal, wrapper must be returned", proc()
+      # (1) act
+      const (
+        p = "/one/two/three"
+        w = expected.path(p)
+        out = w.equalTo(p)
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when two Linux paths being not equal, error must be raised", proc()
+      # (1) act
+      const (
+        p1 = "/one/two/three"
+        p2 = "/three/two/one"
+        w = expected.path(p1)
+        out = peval(w.equalTo(p2))
+      )
+
+      # (2) assessment
+      expected(out)\
+        .it(0).equalTo(false)\
+        .it(1).toBe(AssertionError).like($"path .*${p1}.* should be equal to .*${p2}.*\.")
+    end)
+
+    test("when two Windows paths being equal but w/ different drive letter, wrapper must be returned", proc()
+      # (1) act
+      const (
+        p1 = "C:\\one\\two\\three"
+        p2 = "D:\\one\\two\\three"
+        w = expected.path(p1)
+        out = w.equalTo(p2)
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when Windows and Linux paths being equal, wrapper must be returned", proc()
+      # (1) act
+      const (
+        p1 = "C:\\one\\two\\three"
+        p2 = "/one/two/three"
+        w = expected.path(p1)
+        out = w.equalTo(p2)
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+  end)
+end)
