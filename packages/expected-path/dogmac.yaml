@@ -1,0 +1,7 @@
+uses:
+  assert:
+    js: assert
+  expected:
+    js: "@akromio/expected"
+  helpers:
+    js: "@akromio/expected-helpers"

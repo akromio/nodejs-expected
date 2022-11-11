@@ -1,0 +1,36 @@
+use (
+  dep://path
+  {color} = alias://helpers
+  AssertionError
+)
+
+/**
+ * A wrapper of a path to assert things with it.
+ */
+export struct PathWrapper
+  /**
+   * Path to assert.
+   */
+  @hidden
+  pub const path: text
+
+  /**
+   * Checks whether the path is this given.
+   *
+   * If Windows and drive letter indicated, this is removed for the check.
+   */
+  pub fn equalTo(p: text) -> self
+    # (1) normalize paths
+    const (
+      p1 = normalize(self.path)
+      p2 = normalize(p)
+    )
+
+    # (2) check paths
+    if p1 != p2 then
+      throw(AssertionError($"path ${color(p1)} should be equal to ${color(p2)}."))
+
+/**
+ * Normalizes a path to a common format.
+ */
+fn normalize(p: text) = p.replace(re("^[a-zA-Z]:"), "").replace(re("\\\\", "g"), "/")

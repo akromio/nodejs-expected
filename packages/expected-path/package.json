@@ -1,7 +1,7 @@
 {
-  "name": "@akromio/expected-fs",
+  "name": "@akromio/expected-path",
   "version": "0.4.3",
-  "description": "Plugin for asserting files and directories.",
+  "description": "Plugin for asserting paths.",
   "homepage": "https://akromio.com",
   "author": {
     "name": "Sia Codelabs",
@@ -36,8 +36,7 @@
   },
   "dependencies": {
     "@akromio/expected-helpers": "^0.4.3",
-    "@dogmalang/core": "^1.0.0-rc18.0",
-    "@dogmalang/fs.sync": "^0.2.0"
+    "@dogmalang/core": "^1.0.0-rc18.0"
   },
   "devDependencies": {
     "@akromio/expected": "^0.4.3"
@@ -47,7 +46,7 @@
     "build": "npm run build/src",
     "build/src": "rm -rf dist/ && dogmac js -o dist/cjs/ src && babel -d dist dist && cp src/*.d.ts dist/cjs/",
     "test": "npm run test/build && mocha --config .mocharc.yaml",
-    "test/build": "rm -rf ./__tests__ && dogmac js -o __tests__ tests && babel -d __tests__ __tests__ && cp -r tests/data __tests__/data",
+    "test/build": "rm -rf ./__tests__ && dogmac js -o __tests__ tests && babel -d __tests__ __tests__",
     "cov": "c8 mocha --config .mocharc.yaml"
   }
 }

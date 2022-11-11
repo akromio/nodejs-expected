@@ -1,0 +1,11 @@
+use (
+  pkg = ../../package
+  dep://path
+  PathWrapper
+)
+
+export {
+  name = pkg.name
+  members =
+    path = fn(...args) = PathWrapper(path = path.join(...args)) end
+}
