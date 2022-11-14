@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected-fs",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Plugin for asserting files and directories.",
   "homepage": "https://akromio.com",
   "author": {
@@ -31,12 +31,12 @@
     "dist/"
   ],
   "dependencies": {
-    "@akromio/expected-helpers": "^0.5.0",
+    "@akromio/expected-helpers": "^0.5.1",
     "@dogmalang/core": "^1.0.0-rc18.0",
     "@dogmalang/fs.sync": "^0.2.0"
   },
   "devDependencies": {
-    "@akromio/expected": "^0.5.0"
+    "@akromio/expected": "^0.5.1"
   },
   "scripts": {
     "lint": "dogmac check src tests && tsc src/index.d.ts",
