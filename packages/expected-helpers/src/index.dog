@@ -5,7 +5,7 @@ use (
 /**
  * Maximum length for the texts.
  */
-const maxLen = 50
+const maxLen = 200
 
 /**
  * Section length for the texts.
