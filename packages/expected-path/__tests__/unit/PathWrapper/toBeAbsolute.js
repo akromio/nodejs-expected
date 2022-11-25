@@ -24,7 +24,7 @@ suite(__filename, () => {
             const out = _core.dogma.peval(() => {
               return w.toBeAbsolute();
             });
-            expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like(`path .+${p}.+ should be absolute.`);
+            expected(out).it(0).equalTo(false).it(1).toBe(AssertionError).like(`path .*${p}.* should be absolute.`);
           }
         });
       }
