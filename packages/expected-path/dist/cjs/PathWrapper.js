@@ -43,6 +43,15 @@ PathWrapper.prototype.equalTo = function (p) {
   }
   return this;
 };
+PathWrapper.prototype.toBeAbsolute = function () {
+  const self = this;
+  {
+    if (!path.isAbsolute(this.path)) {
+      _core.dogma.raise(AssertionError(`path ${color(self.path)} should be absolute.`));
+    }
+  }
+  return this;
+};
 function normalize(p) {
   /* c8 ignore next */_core.dogma.expect("p", p, _core.text);
   {

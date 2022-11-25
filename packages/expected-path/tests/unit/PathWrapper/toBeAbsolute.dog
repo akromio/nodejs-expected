@@ -1,0 +1,34 @@
+use (
+  {AssertionError} = dep://assert
+  alias://expected
+)
+
+suite(__filename, proc()
+  suite("toBeAbsolute()", proc()
+    test("when absolute, wrapper must be returned", proc()
+      # (1) act
+      const (
+        p = "/one/two/three"
+        w = expected.path(p)
+        out = w.toBeAbsolute()
+      )
+
+      # (2) assessment
+      expected(out).sameAs(w)
+    end)
+
+    test("when relative, assertion error must be raised", proc()
+      # (1) act
+      const (
+        p = "one/two/three"
+        w = expected.path(p)
+        out = peval(w.toBeAbsolute())
+      )
+
+      # (2) assessment
+      expected(out)\
+        .it(0).equalTo(false)\
+        .it(1).toBe(AssertionError).like("path .*one.two.three.* should be absolute.")
+    end)
+  end)
+end)
