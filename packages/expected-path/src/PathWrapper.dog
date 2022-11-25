@@ -29,6 +29,13 @@ export struct PathWrapper
     # (2) check paths
     if p1 != p2 then
       throw(AssertionError($"path ${color(p1)} should be equal to ${color(p2)}."))
+  
+  /**
+   * Checks whnether the path is absolute.
+   */
+  pub fn toBeAbsolute() -> self
+    if not path.isAbsolute(self.path) then
+      throw(AssertionError($"path ${color(self.path)} should be absolute."))
 
 /**
  * Normalizes a path to a common format.

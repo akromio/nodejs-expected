@@ -12,4 +12,9 @@ export default class PathWrapper {
    * @param p - Other path to check.
    */
   equalTo(p: text): this
+
+  /**
+   * Checks whether the path is absolute.
+   */
+  toBeAbsolute(): this
 }
