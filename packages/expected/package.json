@@ -34,7 +34,7 @@
   "dependencies": {
     "@akromio/expected-helpers": "^0.6.0",
     "@dogmalang/core": "^1.0.0-rc18.0",
-    "chalk": "^4.1.2",
+    "chalk": "^5.1.2",
     "lodash.get": "^4.4.2",
     "uuid": "^9.0.0"
   },
