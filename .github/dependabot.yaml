@@ -15,3 +15,5 @@ updates:
       prefix: depbot
       prefix-development: depbot
       include: scope
+    ignore:
+      - dependency-name: chalk
