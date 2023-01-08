@@ -3,10 +3,13 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    ignore:
+      - dependency-name: chalk
     schedule:
       interval: weekly
       day: sunday
       time: "00:00"
+    versioning-strategy: increase
     pull-request-branch-name:
       separator: /
     labels:
@@ -15,5 +18,3 @@ updates:
       prefix: depbot
       prefix-development: depbot
       include: scope
-    ignore:
-      - dependency-name: chalk
