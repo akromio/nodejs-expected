@@ -7,8 +7,10 @@ exports.color = color;
 exports.format = format;
 var _core = require("@dogmalang/core");
 const chalk = _core.dogma.use(require("chalk"));
-const maxLen = 200;
-const segmentLen = 50 / 2 - 6;
+const {
+  maxLen,
+  segmentLen
+} = _core.dogma.use(require("./config"));
 function format(value) {
   let repr;
   {

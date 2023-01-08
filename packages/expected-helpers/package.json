@@ -35,11 +35,10 @@
     "chalk": "^4.1.2"
   },
   "scripts": {
-    "lint": "dogmac check src tests",
+    "lint": "dogmac check src",
     "build": "npm run build/src",
     "build/src": "rm -rf dist/ && dogmac js -o dist/cjs/ src && babel -d dist/ dist/",
-    "test": "npm run test/build && mocha --config .mocharc.yaml",
-    "test/build": "rm -rf ./__tests__ && dogmac js -o __tests__ tests && babel -d __tests__ __tests__",
+    "test": "mocha --config .mocharc.yaml",
     "cov": "c8 mocha --config .mocharc.yaml"
   }
 }

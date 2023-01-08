@@ -1,0 +1,9 @@
+/**
+ * Maximum length for the texts.
+ */
+pub const maxLen = 200
+
+/**
+ * Section length for the texts.
+ */
+pub const segmentLen = (maxLen / 2) - 6

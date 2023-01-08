@@ -4,20 +4,23 @@ var _core = require("@dogmalang/core");
 const {
   assert
 } = _core.dogma.use(require("chai"));
-const pkg = _core.dogma.use(require("../.."));
+const index = _core.dogma.use(require("./index"));
+const {
+  maxLen
+} = _core.dogma.use(require("./config"));
 module.exports = exports = suite(__filename, () => {
   {
     test("when imported, api must be exported", () => {
       {
-        assert.isFunction(pkg.format);
-        assert.isFunction(pkg.color);
+        assert.isFunction(index.format);
+        assert.isFunction(index.color);
       }
     });
     suite("color()", () => {
       {
         const {
           color
-        } = pkg;
+        } = index;
         test("when value passed, this must be colored", () => {
           {
             const value = "hello";
@@ -31,10 +34,10 @@ module.exports = exports = suite(__filename, () => {
       {
         const {
           format
-        } = pkg;
+        } = index;
         test("when value length greater than max length, value must be reduced", () => {
           {
-            const value = "ci" + "x".repeat(100) + "ao";
+            const value = "ci" + "x".repeat(maxLen) + "ao";
             const out = format(value);
             assert.isAbove((0, _core.len)(out), 30);
             assert.include(out, "cix");
