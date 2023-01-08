@@ -29,6 +29,28 @@ module.exports = exports = suite(__filename, () => {
         });
       }
     });
+    suite("first and second", () => {
+      {
+        test("when first, item wrapper with original value must be returned", () => {
+          {
+            const value = [11, 22, 33];
+            const w = expected(value).first;
+            assert.strictEqual(w.originalValue, value);
+            assert.equal(w.value, 11);
+            assert.strictEqual(w.equalTo(11), w);
+          }
+        });
+        test("when second, item wrapper with original value must be returned", () => {
+          {
+            const value = [11, 22, 33];
+            const w = expected(value).second;
+            assert.strictEqual(w.originalValue, value);
+            assert.equal(w.value, 22);
+            assert.strictEqual(w.equalTo(22), w);
+          }
+        });
+      }
+    });
     suite("items()", () => {
       {
         test("when indexes passed, ValuesWrapper w/ selected items must be returned", () => {
