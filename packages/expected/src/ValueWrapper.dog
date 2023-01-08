@@ -43,6 +43,16 @@ export struct ValueWrapper
   pub fn item(i: num) = self.get($"[${i}]")
   
   /**
+   * Alias for it(0).
+   */
+  pub fn first = self.item(0)
+
+  /**
+   * Alias for it(1).
+   */
+  pub fn second = self.item(1)
+  
+  /**
    * Returns a wrapper for the items if list.
    */
   pub fn items(...indexes): ValuesWrapper

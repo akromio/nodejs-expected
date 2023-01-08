@@ -32,9 +32,35 @@ export suite(__filename, proc()
     end)
   end)
 
+  suite("first and second", proc()
+    test("when first, item wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).first
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, 11)
+      assert.strictEqual(w.equalTo(11), w)
+    end)
+
+    test("when second, item wrapper with original value must be returned", proc()
+      # (1) act
+      const (
+        value = [11, 22, 33]
+        w = expected(value).second
+      )
+
+      # (2) assessment
+      assert.strictEqual(w.originalValue, value)
+      assert.equal(w.value, 22)
+      assert.strictEqual(w.equalTo(22), w)
+    end)
+  end)
+
   suite("items()", proc()
-
-
     test("when indexes passed, ValuesWrapper w/ selected items must be returned", proc()
       # (1) act
       const (

@@ -5,7 +5,4 @@ extension:
   - js
 
 spec:
-  - __tests__/**/*.js
-  
-ignore:
-  - "**/*/__init__.js"
+  - "**/*.test.js"

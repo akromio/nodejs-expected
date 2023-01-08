@@ -1,16 +1,7 @@
 use (
   dep://chalk
+  {maxLen, segmentLen} = config
 )
-
-/**
- * Maximum length for the texts.
- */
-const maxLen = 200
-
-/**
- * Section length for the texts.
- */
-const segmentLen = (50 / 2) - 6
 
 /**
  * Formats a given [value].

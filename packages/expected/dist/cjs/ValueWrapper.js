@@ -62,6 +62,32 @@ ValueWrapper.prototype.it = ValueWrapper.prototype.item = function (i) {
     return this.get(`[${i}]`);
   }
 };
+Object.defineProperty(ValueWrapper.prototype, "first", {
+  enum: true,
+  get: function () {
+    const self = this;
+    const {
+      value,
+      originalValue
+    } = self;
+    {
+      return this.item(0);
+    }
+  }
+});
+Object.defineProperty(ValueWrapper.prototype, "second", {
+  enum: true,
+  get: function () {
+    const self = this;
+    const {
+      value,
+      originalValue
+    } = self;
+    {
+      return this.item(1);
+    }
+  }
+});
 ValueWrapper.prototype.items = function (...indexes) {
   const self = this;
   const {

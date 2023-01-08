@@ -22,6 +22,16 @@ export default class ValueWrapper {
   it(i: num): this
 
   /**
+   * Alias for item(0).
+   */
+  get first(): this
+
+  /**
+   * Alias for item(1).
+   */
+  get second(): this
+
+  /**
    * Returns a wrapper for the items if list.
    */
   items(...indexes: num[]): ValuesWrapper
