@@ -16,7 +16,7 @@
     "@dogmalang/core": "^1.0.0-rc18.0",
     "@types/node": "^18.15.10",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
-    "@typescript-eslint/parser": "^5.56.0",
+    "@typescript-eslint/parser": "^5.59.6",
     "c8": "^7.13.0",
     "chai": "^4.3.7",
     "eslint": "^8.36.0",
