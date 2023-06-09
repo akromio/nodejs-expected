@@ -1,6 +1,6 @@
 {
   "name": "@akromio/expected-path",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Plugin for asserting paths.",
   "homepage": "https://akromio.com",
   "author": {
@@ -31,11 +31,11 @@
     "dist/"
   ],
   "dependencies": {
-    "@akromio/expected-helpers": "^0.7.0",
+    "@akromio/expected-helpers": "^0.7.1",
     "@dogmalang/core": "^1.0.0-rc18.0"
   },
   "devDependencies": {
-    "@akromio/expected": "^0.7.0"
+    "@akromio/expected": "^0.7.1"
   },
   "scripts": {
     "lint": "dogmac check src tests && tsc src/index.d.ts",
