@@ -31,12 +31,6 @@ export struct ValueWrapper
   pub const originalValue?
 
   /**
-   * When promise, it indicates if this was fulfilled/resolved.
-   */
-  @hidden
-  pub const fulfilled?: bool
-
-  /**
    * Returns a wrapper for an item of a list.
    */
   @alias("it")
@@ -316,6 +310,20 @@ export struct ValueWrapper
   pub fn notToBeMap() -> self
     if value is map then
       throw(AssertionError($"${format(value)} should not be an object or map."))
+  
+  /**
+   * Checks whether the value is a promise.
+   */
+  pub fn toBePromise() -> self
+    if value is not promise then
+      throw(AssertionError($"${format(value)} should be a promise."))
+  
+  /**
+   * Checks whether the value is not a promise.
+   */
+  pub fn notToBePromise() -> self
+    if value is promise then
+      throw(AssertionError($"${format(value)} should not be a promise."))
 
   /**
    * Checks whether the value is a function.
@@ -584,20 +592,22 @@ export struct ValueWrapper
       throw(AssertionError($"${format(value)} should not end with ${format(suffix)}."))
 
   /**
-   * Checks whether the promised value has been fulfilled.
+   * Checks whether the promised value has been fulfilled,
+   * returning a new value wrapper with the value returned.
    */
-  @alias("toHaveBeenFulfilled")
-  pub fn toBeFulfilled() -> self
-    if self.fulfilled !== true then
-      throw(AssertionError($"value should have been fulfilled."))
+  pub async fn fulfilled() -> wrapper
+    const [ok, val] = pawait(value)
+    if not ok then throw(AssertionError($"promise should have been fulfilled."))
+    wrapper = ValueWrapper(value = val)
 
   /**
-   * Checks whether the promised value has been rejected.
+   * Checks whether the promised value has been rejected,
+   * returning a new value wrapper with the error raised.
    */
-  @alias("toHaveBeenRejected")
-  pub fn toBeRejected() -> self
-    if self.fulfilled !== false then
-      throw(AssertionError($"value should have been rejected."))
+  pub async fn rejected() -> wrapper
+    const [ok, err] = pawait(value)
+    if ok then throw(AssertionError($"promise should have been rejected."))
+    wrapper = ValueWrapper(value = err)
 
   /**
    * Checks whether the value is a valid UUID.
