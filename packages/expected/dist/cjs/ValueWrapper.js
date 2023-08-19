@@ -524,6 +524,32 @@ ValueWrapper.prototype.notToBeObject = ValueWrapper.prototype.notToBeMap = funct
   }
   return this;
 };
+ValueWrapper.prototype.toBeError = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.isNot(value, Error)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should be an error.`));
+    }
+  }
+  return this;
+};
+ValueWrapper.prototype.notToBeError = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.is(value, Error)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should not be an error.`));
+    }
+  }
+  return this;
+};
 ValueWrapper.prototype.toBePromise = function () {
   const self = this;
   const {

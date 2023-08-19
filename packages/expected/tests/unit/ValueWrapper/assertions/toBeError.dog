@@ -1,0 +1,53 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("toBeError()", proc()
+    test("when Error, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected(native("new Error()"))
+        out = w.toBeError()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when not Error, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected("").toBeError())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should be an error")
+    end)
+  end)
+
+  suite("notToBeError()", proc()
+    test("when not Error, wrapper must be returned", proc()
+      # (1) act
+      const (
+        w = expected("")
+        out = w.notToBeError()
+      )
+
+      # (2) assessment
+      assert.strictEqual(w, out)
+    end)
+
+    test("when Error, assertion error must be raised", proc()
+      # (1) act
+      const out = peval(expected(native("new Error()")).notToBeError())
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should not be an error")
+    end)
+  end)
+end)
