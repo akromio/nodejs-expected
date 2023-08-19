@@ -275,6 +275,16 @@ export default class ValueWrapper {
   notToBeMap(): this
 
   /**
+   * Checks whether the value is a promise.
+   */
+  toBePromise(): this
+
+  /**
+   * Checks whether the value is not a promise.
+   */
+  notToBePromise(): this
+
+  /**
    * Checks whether the value is a function.
    */
   toBeFunction(): this
@@ -490,24 +500,26 @@ export default class ValueWrapper {
   notToEndWith(suffix: text): this
 
   /**
-   * Checks whether the promised value has been fulfilled.
+   * Checks whether the promised value has been fulfilled,
+   * returning a new value wrapper for the value returned.
+   *
+   * @example
+   * ```typescript
+   * (await expected(value).fulfilled()).equalTo(123)
+   * ```
    */
-  toHaveBeenFulfilled(): this
+  fulfilled(): Promise<this>
 
   /**
-   * Alias for toHaveBeenFulfilled().
+   * Checks whether the promised value has been rejected,
+   * returning a new value wrapper for the error raised.
+   *
+   * @example
+   * ```typescript
+   * (await expected(value).rejected()).equalTo(new Error("message"))
+   * ```
    */
-  toBeFulfilled(): this
-
-  /**
-   * Checks whether the promised value has been rejected.
-   */
-  toHaveBeenRejected(): this
-
-  /**
-   * Alias for toHaveBeenRejected().
-   */
-  toBeRejected(): this
+  rejected(): Promise<this>
 
   /**
    * Checks whether the value is a valid UUID.

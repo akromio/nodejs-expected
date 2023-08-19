@@ -1,0 +1,35 @@
+use (
+  {AssertionError} = dep://assert
+  {assert} = dep://chai
+  expected = ~
+)
+
+suite(__filename, proc()
+  suite("fulfilled()", proc()
+    test("when fulfilled, new ValueWrapper must be returned", async proc()
+      # (1) act
+      const (
+        value = promise.resolve(123)
+        out = pawait(expected(value).fulfilled())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], true)
+      assert.equal(typename(out[1]), "ValueWrapper")
+      assert.equal(out[1].equalTo(123), out[1])
+    end)
+
+    test("when rejected, assertion error must be raised", async proc()
+      # (1) act
+      const (
+        value = promise.reject(Error("This the error"))
+        out = pawait(expected(value).fulfilled())
+      )
+
+      # (2) assessment
+      assert.equal(out[0], false)
+      assert.instanceOf(out[1], AssertionError)
+      assert.include(out[1].message, "should have been fulfilled")
+    end)
+  end)
+end)

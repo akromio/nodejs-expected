@@ -29,13 +29,6 @@ const $ValueWrapper = class ValueWrapper {
       enumerable: false
     });
     /* c8 ignore start */
-    if (_['fulfilled'] != null) (0, _core.expect)('fulfilled', _['fulfilled'], _core.bool); /* c8 ignore stop */
-    Object.defineProperty(this, 'fulfilled', {
-      value: (0, _core.coalesce)(_['fulfilled'], null),
-      writable: false,
-      enumerable: false
-    });
-    /* c8 ignore start */
     if (this._pvt_62bf16e296951a4d67bb347ede049a31___init__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___init__(_); /* c8 ignore stop */
     /* c8 ignore start */
     if (this._pvt_62bf16e296951a4d67bb347ede049a31___post__ instanceof Function) this._pvt_62bf16e296951a4d67bb347ede049a31___post__(); /* c8 ignore stop */
@@ -527,6 +520,32 @@ ValueWrapper.prototype.notToBeObject = ValueWrapper.prototype.notToBeMap = funct
   {
     if (_core.dogma.is(value, _core.map)) {
       _core.dogma.raise(AssertionError(`${format(value)} should not be an object or map.`));
+    }
+  }
+  return this;
+};
+ValueWrapper.prototype.toBePromise = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.isNot(value, _core.promise)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should be a promise.`));
+    }
+  }
+  return this;
+};
+ValueWrapper.prototype.notToBePromise = function () {
+  const self = this;
+  const {
+    value,
+    originalValue
+  } = self;
+  {
+    if (_core.dogma.is(value, _core.promise)) {
+      _core.dogma.raise(AssertionError(`${format(value)} should not be a promise.`));
     }
   }
   return this;
@@ -1032,31 +1051,41 @@ ValueWrapper.prototype.notToEndWith = function (suffix) {
   }
   return this;
 };
-ValueWrapper.prototype.toHaveBeenFulfilled = ValueWrapper.prototype.toBeFulfilled = function () {
+ValueWrapper.prototype.fulfilled = async function () {
   const self = this;
   const {
     value,
     originalValue
   } = self;
+  let wrapper;
   {
-    if (this.fulfilled !== true) {
-      _core.dogma.raise(AssertionError(`value should have been fulfilled.`));
+    const [ok, val] = _core.dogma.getArrayToUnpack(await _core.dogma.pawait(() => value), 2);
+    if (!ok) {
+      _core.dogma.raise(AssertionError(`promise should have been fulfilled.`));
     }
+    wrapper = ValueWrapper({
+      'value': val
+    });
   }
-  return this;
+  return wrapper;
 };
-ValueWrapper.prototype.toHaveBeenRejected = ValueWrapper.prototype.toBeRejected = function () {
+ValueWrapper.prototype.rejected = async function () {
   const self = this;
   const {
     value,
     originalValue
   } = self;
+  let wrapper;
   {
-    if (this.fulfilled !== false) {
-      _core.dogma.raise(AssertionError(`value should have been rejected.`));
+    const [ok, err] = _core.dogma.getArrayToUnpack(await _core.dogma.pawait(() => value), 2);
+    if (ok) {
+      _core.dogma.raise(AssertionError(`promise should have been rejected.`));
     }
+    wrapper = ValueWrapper({
+      'value': err
+    });
   }
-  return this;
+  return wrapper;
 };
 ValueWrapper.prototype.toBeUuid = function () {
   const self = this;

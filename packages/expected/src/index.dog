@@ -5,16 +5,7 @@ use (
 /**
  * Creates a [value] wrapper for performing assertions on it.
  */
-export fn expected(value?) -> wrapper
-  if value is not promise then
-    wrapper = ValueWrapper(value=)
-  else
-    wrapper = promise(async proc(rslv, rej)
-      if [ok, returned] ::= pawait(value); ok then
-        rslv(ValueWrapper(value = returned, fulfilled = true))
-      else
-        rslv(ValueWrapper(value = returned, fulfilled = false))
-    end)
+export fn expected(value?) = ValueWrapper(value=)
 
 /**
  * Loaded plugins.
