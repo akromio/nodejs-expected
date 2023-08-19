@@ -145,6 +145,16 @@ export default class ValueWrapper {
   notToBeNil(): this
 
   /**
+   * Checks whether the value is an instance of Error.
+   */
+  toBeError(): this
+
+  /**
+   * Checks whether the value is not an instance of Error.
+   */
+  notToBeError(): this
+
+  /**
    * Check whether the value is a boolean.
    */
   toBeBoolean(): this

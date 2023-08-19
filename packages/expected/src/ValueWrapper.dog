@@ -312,6 +312,20 @@ export struct ValueWrapper
       throw(AssertionError($"${format(value)} should not be an object or map."))
   
   /**
+   * Checks whether the value is an Error.
+   */
+  pub fn toBeError() -> self
+    if value is not Error then
+      throw(AssertionError($"${format(value)} should be an error."))
+  
+  /**
+   * Checks whether the value is not an Error.
+   */
+  pub fn notToBeError() -> self
+    if value is Error then
+      throw(AssertionError($"${format(value)} should not be an error."))
+  
+  /**
    * Checks whether the value is a promise.
    */
   pub fn toBePromise() -> self
